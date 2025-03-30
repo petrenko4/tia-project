@@ -1,11 +1,11 @@
 function Header() {
-
     return (
-        <div className="row mb-3" >
-            <div className="d-flex justify-content-start" style={{ height: "auto", paddingTop: "50px" }}>
-                <div style={{ fontSize: "6rem", fontWeight: "bold" }} className="display-1 py-3">ASP</div>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col-12 text-center">
+                    <h1 style={{ fontSize: "4rem", fontWeight: "bold" }} className="display-1">ASP</h1>
+                </div>
             </div>
-            <div className="col-sm" />
         </div>
     )
 }

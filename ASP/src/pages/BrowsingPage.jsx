@@ -1,3 +1,4 @@
+import '../styles/commonStyles.css'
 function BrowsingPage() {
 
     return (

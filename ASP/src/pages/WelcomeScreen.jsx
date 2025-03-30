@@ -1,3 +1,6 @@
+
+import '../styles/commonStyles.css';
+
 function WelcomeScreen() {
 
     return (
