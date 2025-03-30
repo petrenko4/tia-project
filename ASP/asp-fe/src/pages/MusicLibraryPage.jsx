@@ -1,37 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/commonStyles.css';
 import '../styles/tracklistStyles.css';
+import { getTracks } from '../services/tracksService';
 
 function MusicLibraryPage() {
-  const [musicFiles, setMusicFiles] = useState([
-    {
-      id: 1,
-      title: 'Song 1',
-      artist: 'Artist 1',
-      album: 'Album 1',
-      file: 'https://example.com/song1.mp3',
-    },
-    {
-      id: 2,
-      title: 'Song 2',
-      artist: 'Artist 2',
-      album: 'Album 2',
-      file: 'https://example.com/song2.mp3',
-    },
-    {
-      id: 3,
-      title: 'Song 3',
-      artist: 'Artist 3',
-      album: 'Album 3',
-      file: 'https://file-examples.com/storage/fe43f661cd67e82d2a11c0a/2017/11/file_example_MP3_700KB.mp3',
-    },
-  ]);
+  const [tracks, setTracks] = useState([]);
+
+  useEffect(() => {
+    getTracks()
+      .then((tracks) => {
+        setTracks(tracks);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return (
     <div className="container mt-5">
       <h1>My Music Library</h1>
       <div className="song-list">
-        {musicFiles.map((file) => (
+        {tracks.map((file) => (
           <div key={file.id} className="song-box">
             <div className="song-info">
               <h2>{file.title}</h2>

@@ -5,7 +5,7 @@ const tracks = [
     title: 'Happy Birthday',
     artist: 'Unknown',
     album: 'Birthday Songs',
-    file: 'https://example.com/happy-birthday.mp3',
+    file: 'https://file-examples.com/storage/fe43f661cd67e82d2a11c0a/2017/11/file_example_MP3_700KB.mp3',
     duration: '2:30',
   },
   {
