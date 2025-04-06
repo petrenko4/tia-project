@@ -16,25 +16,26 @@ function getTracks() {
         });
 }
 
-function addTrack(track) {
-    return fetch("/api/v1/tracks", {
+async function addTrack(track) {
+    const formData = new FormData();
+    formData.append("title", track.title);
+    formData.append("file", track.file); // this is the actual .mp3 file
+    formData.append("releaseType", track.releaseType);
+    formData.append("category", track.category);
+
+    const response = await fetch("/api/v1/tracks", {
         method: "POST",
-        headers: { "Content-Type": "application/json"},
-        credentials: "include",
-        body: JSON.stringify(track)
-    })
-        .then((response) => {  // promise is resolved
-            if (!response.ok) {
-                // "unauthorized" or "unauthenticated" HTTP status
-                if (response.status === 401 || response.status === 403) {
-                    throw new Error("Not authenticated");
-                }   
-                // other error HTTP status
-                throw new Error("Error adding new message");
-            }  
-            naviga     
-        })
-       
+        body: formData, // no JSON.stringify
+        credentials: "include" // still keeps cookies/session
+        // Note: DO NOT set Content-Type header manually; browser will do it
+    });
+    if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+            throw new Error("Not authenticated");
+        }
+        throw new Error("Error adding new track");
+    }
+    return await response.json();
 }
 
 export { getTracks, addTrack };

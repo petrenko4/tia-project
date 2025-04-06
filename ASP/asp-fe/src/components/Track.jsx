@@ -13,7 +13,7 @@ function Track({ track }) {
             <p className="card-text">{track.releaseType}</p>
             <p className="card-text">{track.category}</p>
             <audio controls>
-              <source src={track.file} type="audio/mpeg" />
+              <source src={`http://localhost:3000${track.file}`} type="audio/mpeg" />
             </audio>
           </div>
         </div>
