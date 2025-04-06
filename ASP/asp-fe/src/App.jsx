@@ -10,17 +10,6 @@ import WelcomeScreen from './pages/WelcomeScreen';
 import UploadMusic from './pages/UploadMusic';
 
 function App() {
-  const [tracks, setTracks] = useState([]); 
-
-  useEffect(() => {
-    getTracks()
-      .then((tracks) => {
-        setTracks(tracks);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
 
   return (
     <>

@@ -1,3 +1,5 @@
+
+
 function getTracks() {
     return fetch("/api/v1/tracks").then(  // promise is resolved
         (response) => {
@@ -29,7 +31,8 @@ function addTrack(track) {
                 }   
                 // other error HTTP status
                 throw new Error("Error adding new message");
-            }       
+            }  
+            naviga     
         })
        
 }
