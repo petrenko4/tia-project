@@ -14,4 +14,24 @@ function getTracks() {
         });
 }
 
-export { getTracks };
+function addTrack(track) {
+    return fetch("/api/v1/tracks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        credentials: "include",
+        body: JSON.stringify(track)
+    })
+        .then((response) => {  // promise is resolved
+            if (!response.ok) {
+                // "unauthorized" or "unauthenticated" HTTP status
+                if (response.status === 401 || response.status === 403) {
+                    throw new Error("Not authenticated");
+                }   
+                // other error HTTP status
+                throw new Error("Error adding new message");
+            }       
+        })
+       
+}
+
+export { getTracks, addTrack };
