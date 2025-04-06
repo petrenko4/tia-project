@@ -1,70 +1,76 @@
 import React, { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function UploadMusic() {
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [uploadStatus, setUploadStatus] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [trackName, setTrackName] = useState('');
+  const [releaseType, setReleaseType] = useState('');
+  const [category, setCategory] = useState('');
 
-    const handleFileChange = (event) => {
-        const file = event.target.files[0];
-        if (file && file.type === 'audio/mpeg') {
-            setSelectedFile(file);
-            setUploadStatus('');
-        } else {
-            setSelectedFile(null);
-            setUploadStatus('Please select an MP3 file.');
-        }
-    };
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
 
-    const handleUpload = async () => {
-        if (!selectedFile) {
-            setUploadStatus('Please select an MP3 file first.');
-            return;
-        }
+  const handleTrackNameChange = (event) => {
+    setTrackName(event.target.value);
+  };
 
-        setUploadStatus('Uploading...');
+  const handleReleaseTypeChange = (event) => {
+    setReleaseType(event.target.value);
+  };
 
-        await new Promise(resolve => setTimeout(resolve, 2000));
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
 
-        setUploadStatus('File uploaded successfully!');
-        setSelectedFile(null);
-    };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Upload the file and track information to the server
+    console.log('Selected file:', selectedFile);
+    console.log('Track name:', trackName);
+    console.log('Release type:', releaseType);
+    console.log('Category:', category);
+  };
 
-    return (
-        <div className="container mt-5">
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <div className="card shadow-lg">
-                        <div className="card-body p-5">
-                            <h1 className="card-title text-center mb-5">Upload Music</h1>
-                            <div className="mb-4">
-                                <input 
-                                    type="file" 
-                                    className="form-control form-control-lg" 
-                                    onChange={handleFileChange}
-                                    accept=".mp3,audio/mpeg"
-                                />
-                            </div>
-                            <div className="d-grid">
-                                <button 
-                                    className="btn btn-primary btn-lg" 
-                                    onClick={handleUpload}
-                                    disabled={!selectedFile}
-                                >
-                                    Upload
-                                </button>
-                            </div>
-                            {uploadStatus && (
-                                <div className={`mt-4 alert ${uploadStatus.includes('successfully') ? 'alert-success' : 'alert-info'} p-3 fs-5`}>
-                                    {uploadStatus}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
+  return (
+    <div className="container">
+      <h1 className="text-center mt-5">Upload Music</h1>
+      <form onSubmit={handleSubmit} className="needs-validation" noValidate>
+        <div className="form-group">
+          <label htmlFor="fileInput">Choose file:</label>
+          <input type="file" id="fileInput" onChange={handleFileChange} className="form-control-file" />
         </div>
-    );
+        <div className="form-group">
+          <label htmlFor="trackNameInput">Track name:</label>
+          <input type="text" id="trackNameInput" value={trackName} onChange={handleTrackNameChange} className="form-control" required />
+          <div className="invalid-feedback">Please enter a track name.</div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="releaseTypeSelect">Release type:</label>
+          <select id="releaseTypeSelect" value={releaseType} onChange={handleReleaseTypeChange} className="form-control" required>
+            <option value="">Select a release type</option>
+            <option value="album">Album</option>
+            <option value="track">Track</option>
+            <option value="ep">EP</option>
+          </select>
+          <div className="invalid-feedback">Please select a release type.</div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="categorySelect">Category:</label>
+          <select id="categorySelect" value={category} onChange={handleCategoryChange} className="form-control" required>
+            <option value="">Select a category</option>
+            <option value="rock">Rock</option>
+            <option value="pop">Pop</option>
+            <option value="hip-hop">Hip-Hop</option>
+            <option value="electronic">Electronic</option>
+            <option value="other">Other</option>
+          </select>
+          <div className="invalid-feedback">Please select a category.</div>
+        </div>
+        <button type="submit" className="btn btn-primary">Upload</button>
+      </form>
+    </div>
+  );
 }
 
 export default UploadMusic;
-
