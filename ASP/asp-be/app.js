@@ -8,7 +8,11 @@ var usersRouter = require('./routes/users');
 var tracksRouter = require('./routes/api_v1/tracks');
 
 var app = express();
+var cors = require('cors');
 
+app.use(cors({
+        origin: 'http://localhost:5173'
+}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

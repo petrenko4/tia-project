@@ -24,8 +24,14 @@ function UploadMusic() {
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
-            addTrack(track);
-            navigate("/library");
+            checkFileExists(track.file).then((exists) => {
+                if (exists) {
+                    setErrors({file: 'File already exists'});
+                } else {
+                    addTrack(track);
+                    navigate("/library");
+                }
+            });
         }
     };
 
@@ -45,6 +51,23 @@ function UploadMusic() {
         }
         return errors;
     };
+
+    const checkFileExists = (file) => {
+    const fileName = file.name;
+    const url = `http://localhost:3000/uploads/${file.name}`;
+    return fetch(url)
+      .then((response) => {
+        if (response.status === 200) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        return false;
+      });
+  };
 
     return (
         <div className="container">

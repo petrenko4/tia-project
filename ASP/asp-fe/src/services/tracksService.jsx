@@ -19,15 +19,16 @@ function getTracks() {
 async function addTrack(track) {
     const formData = new FormData();
     formData.append("title", track.title);
-    formData.append("file", track.file); // this is the actual .mp3 file
+    formData.append("file", track.file); 
     formData.append("releaseType", track.releaseType);
     formData.append("category", track.category);
+    console.log(track.file.title);
 
     const response = await fetch("/api/v1/tracks", {
         method: "POST",
-        body: formData, // no JSON.stringify
-        credentials: "include" // still keeps cookies/session
-        // Note: DO NOT set Content-Type header manually; browser will do it
+        body: formData, 
+        credentials: "include" 
+    
     });
     if (!response.ok) {
         if (response.status === 401 || response.status === 403) {
