@@ -22,7 +22,7 @@ async function addTrack(track) {
     formData.append("file", track.file); 
     formData.append("releaseType", track.releaseType);
     formData.append("category", track.category);
-    console.log(track.file.title);
+    console.log(track.file.data);
 
     const response = await fetch("/api/v1/tracks", {
         method: "POST",
