@@ -1,7 +1,7 @@
 CREATE TABLE "public"."tracks" (
   "id" varchar(100) NOT NULL,
   "title" varchar(255) NOT NULL,
-  "release_type" varchar(50) NOT NULL,
+  "release" varchar(50) NOT NULL,
   "category" varchar(50) NOT NULL,
   /*"file_hash" varchar(255) NOT NULL,    maybe we need this?*/
   "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
