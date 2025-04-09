@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import  Header  from './components/Header'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import PlaylistView from './pages/PlaylistView'
+import CreateReleasePage from './pages/CreateReleasePage';
 import BrowsingPage from './pages/BrowsingPage';
 import MusicLibraryPage from './pages/MusicLibraryPage';
 import './App.css'
@@ -38,6 +39,10 @@ function App() {
           <Route 
             path="/library"
             element={<MusicLibraryPage/>}
+          />
+          <Route 
+            path="/newRelease"
+            element={<CreateReleasePage/>}
           />
         </Routes>
       </BrowserRouter>
