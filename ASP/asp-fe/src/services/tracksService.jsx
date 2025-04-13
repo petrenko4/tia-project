@@ -27,9 +27,8 @@ async function addTrack(track) {
     formData.append("id", crypto.randomUUID());
     formData.append("title", track.title);
     formData.append("file", track.file);
-    formData.append("releaseType", track.releaseType);
     formData.append("category", track.category);
-    formData.append("releaseName", track.releaseName);
+    formData.append("release_id", track.release_id);
     
     const response = await fetch("/api/v1/tracks", {
         method: "POST",

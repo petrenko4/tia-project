@@ -35,6 +35,7 @@ CREATE TABLE "public"."tracks" (
   "category" varchar(50) NOT NULL,
   "file" varchar(255) NOT NULL,
   "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT "fk_release" FOREIGN KEY ("release") REFERENCES "public"."releases"("id") ON DELETE CASCADE,
   PRIMARY KEY ("id")
 );
 
@@ -49,7 +50,7 @@ CREATE TABLE "public"."releases" (
   "name" varchar(255) NOT NULL,
   "type" varchar(50) NOT NULL,
   "authors" text NOT NULL,
-  "tracks" varchar(100)[] NOT NULL,
+  "tracks" varchar(100)[] NOT NULL, --to be removed, tracks have release_id
   CONSTRAINT "fk_release_owner" FOREIGN KEY ("authors") REFERENCES "public"."users"("id") ON DELETE CASCADE,
   PRIMARY KEY ("id")
 );

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { addTrack } from '../services/tracksService';
 import { useNavigate } from "react-router-dom";
+import { getReleases } from '../services/releaseService';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function UploadMusic() {
@@ -10,13 +11,30 @@ function UploadMusic() {
     const [releaseType, setReleaseType] = useState('');
     const [category, setCategory] = useState('');
     const [errors, setErrors] = useState({});
+    const [releases, setReleases] = useState([]);
+
+    useEffect(() => {
+        getReleases()
+            .then((data) => {
+                setReleases(data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value);
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        const releaseId = document.getElementById('releaseSelect').value;
+        console.log(releaseId);
         const track = {
             title: trackName,
             file: selectedFile,
-            releaseType: releaseType,
+            release_id: releaseId,
             category: category,
         };
 
@@ -26,7 +44,7 @@ function UploadMusic() {
         } else {
             checkFileExists(track.file).then((exists) => {
                 if (exists) {
-                    setErrors({file: 'File already exists'});
+                    setErrors({ file: 'File already exists' });
                 } else {
                     addTrack(track);
                     navigate("/library");
@@ -43,31 +61,29 @@ function UploadMusic() {
         if (!track.file) {
             errors.file = 'File is required';
         }
-        if (!track.releaseType) {
-            errors.releaseType = 'Release type is required';
+        if (!track.release_id) {
+            errors.release_id = 'Release is required';
         }
-        if (!track.category) {
-            errors.category = 'Category is required';
-        }
+        console.log(errors); // Object.keys(errors)
         return errors;
     };
 
     const checkFileExists = (file) => {
-    const fileName = file.name;
-    const url = `http://localhost:3000/uploads/${file.name}`;
-    return fetch(url)
-      .then((response) => {
-        if (response.status === 200) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        return false;
-      });
-  };
+        const fileName = file.name;
+        const url = `http://localhost:3000/uploads/${file.name}`;
+        return fetch(url)
+            .then((response) => {
+                if (response.status === 200) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                return false;
+            });
+    };
 
     return (
         <div className="container">
@@ -92,34 +108,24 @@ function UploadMusic() {
                     )}
                 </div>
                 <div className="form-group">
-                    <label htmlFor="releaseTypeSelect">Release type:</label>
-                    <select id="releaseTypeSelect" value={releaseType} onChange={(event) => setReleaseType(event.target.value)} className="form-control" required>
-                        <option value="">Select a release type</option>
-                        <option value="album">Album</option>
-                        <option value="track">Track</option>
+                    <label htmlFor="categorySelect">Category:</label>
+                    <select id="categorySelect" value={category} onChange={handleCategoryChange} className="form-control">
+                        <option value="">Select a category</option>
+                        <option value="single">Single</option>
+                        <option value="release">Release</option>
                         <option value="ep">EP</option>
                     </select>
-                    {errors.releaseType && (
-                        <div className="alert alert-danger mt-2">
-                            {errors.releaseType}
-                        </div>
-                    )}
                 </div>
                 <div className="form-group">
-                    <label htmlFor="categorySelect">Category:</label>
-                    <select id="categorySelect" value={category} onChange={(event) => setCategory(event.target.value)} className="form-control" required>
-                        <option value="">Select a category</option>
-                        <option value="rock">Rock</option>
-                        <option value="pop">Pop</option>
-                        <option value="hip-hop">Hip-Hop</option>
-                        <option value="electronic">Electronic</option>
-                        <option value="other">Other</option>
+                    <label htmlFor="releaseSelect">Select a Release:</label>
+                    <select id="releaseSelect" className="form-control">
+                        <option value="">Select a release</option>
+                        {releases.map((release) => (
+                            <option key={release.id} value={release.id}>
+                                {release.name}
+                            </option>
+                        ))}
                     </select>
-                    {errors.category && (
-                        <div className="alert alert-danger mt-2">
-                            {errors.category}
-                        </div>
-                    )}
                 </div>
                 <button type="submit" className="btn btn-primary">Upload</button>
                 {Object.keys(errors).length > 0 && (
