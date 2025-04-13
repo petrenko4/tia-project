@@ -1,130 +1,93 @@
-import React, { useState } from 'react';
-import { addTrack } from '../services/tracksService';
-import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useEffect } from 'react';
+import { getReleases, addRelease } from '../services/releaseService';
 
-function UploadMusic() {
-  const navigate = useNavigate();
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [trackName, setTrackName] = useState('');
+const CreateReleasePage = () => {
+  const [releases, setReleases] = useState([]);
   const [releaseType, setReleaseType] = useState('');
   const [releaseName, setReleaseName] = useState('');
   const [category, setCategory] = useState('');
-  const [errors, setErrors] = useState({});
+
+  const fetchReleases = () => {
+    getReleases()
+      .then((releases) => {
+        setReleases(releases);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchReleases();
+  }, []);
+
+  const handleReleaseTypeChange = (event) => {
+    setReleaseType(event.target.value);
+  };
+
+  const handleReleaseNameChange = (event) => {
+    setReleaseName(event.target.value);
+  };
+
+  const handleCategoryChange = (event) => {
+    setCategory(event.target.value);
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const track = {
-      title: trackName,
-      file: selectedFile,
+    const release = {
       releaseType,
-      category,
       releaseName,
+      category,
     };
-
-    const validationErrors = validateForm(track);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      addTrack(track);
-      navigate("/library");
-    }
+    addRelease(release)
+      .then((response) => {
+        console.log('Release added successfully:', response);
+        fetchReleases(); // Refresh the releases list
+      })
+      .catch((error) => {
+        console.error('Error adding release:', error);
+      });
   };
 
-  const validateForm = (track) => {
-    const errors = {};
-    if (!trackName) {
-      errors.trackName = 'Track name is required';
-    }
-    if (!releaseType) {
-      errors.releaseType = 'Release type is required';
-    }
-    if (!category) {
-      errors.category = 'Category is required';
-    }
-    if ((releaseType === 'album' || releaseType === 'ep') && !releaseName) {
-      errors.releaseName = 'Release name is required';
-    }
-    return errors;
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-  };
-
-  const handleReleaseTypeChange = (event) => {
-    const newReleaseType = event.target.value;
-    setReleaseType(newReleaseType);
-  };
+  const categories = [
+    { value: 'single', label: 'Single' },
+    { value: 'release', label: 'Release' },
+    { value: 'ep', label: 'EP' },
+  ];
 
   return (
     <div className="container">
-      <h1 className="text-center mt-5">Upload Music</h1>
-      <form onSubmit={handleSubmit} className="needs-validation" noValidate>
+      <h1 className="text-center mt-5">Create Release</h1>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="fileInput">Choose file:</label>
-          <input type="file" id="fileInput" onChange={handleFileChange} className="form-control-file" />
-          {errors.file && (
-            <div className="alert alert-danger mt-2">
-              {errors.file}
-            </div>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="trackNameInput">Track name:</label>
-          <input type="text" id="trackNameInput" value={trackName} onChange={(event) => setTrackName(event.target.value)} className="form-control" required />
-          {errors.trackName && (
-            <div className="alert alert-danger mt-2">
-              {errors.trackName}
-            </div>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="releaseTypeSelect">Release type:</label>
-          <select id="releaseTypeSelect" value={releaseType} onChange={handleReleaseTypeChange} className="form-control" required>
+          <label htmlFor="releaseTypeSelect">Release Type:</label>
+          <select id="releaseTypeSelect" value={releaseType} onChange={handleReleaseTypeChange} className="form-control">
             <option value="">Select a release type</option>
-            <option value="single">Single</option>
+            <option value="track">Track</option>
             <option value="album">Album</option>
-            <option value="ep">EP</option>
           </select>
-          {errors.releaseType && (
-            <div className="alert alert-danger mt-2">
-              {errors.releaseType}
-            </div>
-          )}
         </div>
-        {(releaseType === 'album' || releaseType === 'ep') && (
-          <div className="form-group">
-            <label htmlFor="releaseNameInput">Release name:</label>
-            <input type="text" id="releaseNameInput" value={releaseName} onChange={(event) => setReleaseName(event.target.value)} className="form-control" required />
-            {errors.releaseName && (
-              <div className="alert alert-danger mt-2">
-                {errors.releaseName}
-              </div>
-            )}
-          </div>
-        )}
+        <div className="form-group">
+          <label htmlFor="releaseNameInput">Release Name:</label>
+          <input type="text" id="releaseNameInput" value={releaseName} onChange={handleReleaseNameChange} className="form-control" />
+        </div>
         <div className="form-group">
           <label htmlFor="categorySelect">Category:</label>
-          <select id="categorySelect" value={category} onChange={(event) => setCategory(event.target.value)} className="form-control" required>
+          <select id="categorySelect" value={category} onChange={handleCategoryChange} className="form-control">
             <option value="">Select a category</option>
-            <option value="rock">Rock</option>
-            <option value="pop">Pop</option>
-            <option value="hip-hop">Hip-Hop</option>
-            <option value="electronic">Electronic</option>
-            <option value="other">Other</option>
+            {categories.map((category) => (
+              <option key={category.value} value={category.value}>
+                {category.label}
+              </option>
+            ))}
           </select>
-          {errors.category && (
-            <div className="alert alert-danger mt-2">
-              {errors.category}
-            </div>
-          )}
         </div>
-        <button type="submit" className="btn btn-primary">Upload Track</button>
+        <button type="submit" className="btn btn-primary">Create Release</button>
       </form>
     </div>
   );
-}
+};
 
-export default UploadMusic;
+export default CreateReleasePage;

@@ -47,9 +47,9 @@ CREATE TABLE "public"."category" (
 CREATE TABLE "public"."releases" (
   "id" varchar(100) NOT NULL,
   "name" varchar(255) NOT NULL,
+  "type" varchar(50) NOT NULL,
   "authors" text NOT NULL,
-  "tracks" text[] NOT NULL,
-  "length" integer NOT NULL,
+  "tracks" varchar(100)[] NOT NULL,
   CONSTRAINT "fk_release_owner" FOREIGN KEY ("authors") REFERENCES "public"."users"("id") ON DELETE CASCADE,
   PRIMARY KEY ("id")
 );

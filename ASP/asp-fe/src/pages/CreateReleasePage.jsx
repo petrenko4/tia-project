@@ -1,9 +1,25 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getReleases, addRelease } from '../services/releaseService';
 
 const CreateReleasePage = () => {
+  const [releases, setReleases] = useState([]);
   const [releaseType, setReleaseType] = useState('');
   const [releaseName, setReleaseName] = useState('');
+
+  const fetchReleases = () => {
+    getReleases()
+      .then((releases) => {
+        setReleases(releases);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchReleases();
+  }, []);
 
   const handleReleaseTypeChange = (event) => {
     setReleaseType(event.target.value);
@@ -13,10 +29,26 @@ const CreateReleasePage = () => {
     setReleaseName(event.target.value);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const release = {
+      releaseType,
+      releaseName,
+    };
+    addRelease(release)
+      .then((response) => {
+        console.log('Release added successfully:', response);
+        fetchReleases(); // Refresh the releases list
+      })
+      .catch((error) => {
+        console.error('Error adding release:', error);
+      });
+  };
+
   return (
     <div className="container">
       <h1 className="text-center mt-5">Create Release</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="releaseTypeSelect">Release Type:</label>
           <select id="releaseTypeSelect" value={releaseType} onChange={handleReleaseTypeChange} className="form-control">
