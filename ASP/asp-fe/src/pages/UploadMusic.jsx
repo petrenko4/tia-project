@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function UploadMusic() {
   const navigate = useNavigate();
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [trackName, setTrackName] = useState('');
   const [releaseType, setReleaseType] = useState('');
   const [releaseName, setReleaseName] = useState('');
@@ -14,28 +14,25 @@ function UploadMusic() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const tracks = selectedFiles.map((file) => ({
+    const track = {
       title: trackName,
-      file,
+      file: selectedFile,
       releaseType,
       category,
-      length: getLengthFromAudioFile(file),
-    }));
+      releaseName,
+    };
 
-    const validationErrors = validateForm(tracks);
+    const validationErrors = validateForm(track);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      addTracks(tracks);
+      addTrack(track);
       navigate("/library");
     }
   };
 
-  const validateForm = (tracks) => {
+  const validateForm = (track) => {
     const errors = {};
-    if (tracks.length === 0) {
-      errors.tracks = 'Please select at least one file';
-    }
     if (!trackName) {
       errors.trackName = 'Track name is required';
     }
@@ -52,17 +49,13 @@ function UploadMusic() {
   };
 
   const handleFileChange = (event) => {
-    const files = event.target.files;
-    const newFiles = Array.from(files).map((file) => file);
-    setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    const file = event.target.files[0];
+    setSelectedFile(file);
   };
 
   const handleReleaseTypeChange = (event) => {
     const newReleaseType = event.target.value;
     setReleaseType(newReleaseType);
-    if (newReleaseType === 'single') {
-      setSelectedFiles([]);
-    }
   };
 
   return (
@@ -70,19 +63,12 @@ function UploadMusic() {
       <h1 className="text-center mt-5">Upload Music</h1>
       <form onSubmit={handleSubmit} className="needs-validation" noValidate>
         <div className="form-group">
-          <label htmlFor="fileInput">Choose file(s):</label>
-          <input type="file" id="fileInput" onChange={handleFileChange} multiple={releaseType === 'album' || releaseType === 'ep'} className="form-control-file" />
-          {errors.tracks && (
+          <label htmlFor="fileInput">Choose file:</label>
+          <input type="file" id="fileInput" onChange={handleFileChange} className="form-control-file" />
+          {errors.file && (
             <div className="alert alert-danger mt-2">
-              {errors.tracks}
+              {errors.file}
             </div>
-          )}
-          {selectedFiles.length > 0 && (
-            <ul>
-              {selectedFiles.map((file, index) => (
-                <li key={index}>{file.name}</li>
-              ))}
-            </ul>
           )}
         </div>
         <div className="form-group">
@@ -135,12 +121,7 @@ function UploadMusic() {
             </div>
           )}
         </div>
-        <button type="submit" className="btn btn-primary">Upload</button>
-        {Object.keys(errors).length > 0 && (
-          <div className="alert alert-danger mt-2">
-            Please fix the errors above before submitting.
-          </div>
-        )}
+        <button type="submit" className="btn btn-primary">Upload Track</button>
       </form>
     </div>
   );

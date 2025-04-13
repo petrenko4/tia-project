@@ -2,8 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { getTracks, addTracks } = require('../../models/tracks');
 
-const tracks = [];
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -20,28 +20,45 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.get('/', (req, res) => {
-    res.json(tracks);
+router.get('/', (req, res, next) => {
+    getTracks().then(
+        (tracks) => {
+            res.status(200).json(tracks.rows);
+        }
+    ).catch(
+        (err) => {
+            console.log(err);
+            res.status(500);
+        }
+    );
 });
 
-router.post('/', upload.single('file'), (req, res) => {
-    const { title, releaseType, category } = req.body;
+router.post('/', upload.single('file'), (req, res, next) => {
+    const { id, title, releaseType, category } = req.body;
     const file = req.file;
-
-    if (!file) {
-        return res.status(400).json({ error: 'No file uploaded' });
+    console.log(file);
+    if (!title || !releaseType || !category || !file) {
+        return res.status(400).json({ error: "Missing fields in request" });
     }
-
-    const newTrack = {
-        track_id: crypto.randomUUID(),
+    console.log("req body info");
+    console.log(req.body);
+    
+    trackData = {
+        id,
         title,
         releaseType,
         category,
-        file: `/uploads/${file.filename}`,
+        file: file.filename
     };
 
-    tracks.push(newTrack);
-    res.status(201).json(newTrack);
+    addTracks(trackData).then(
+        (r) => res.status(200)
+    ).catch(
+        (e) => {
+            console.log(e);
+            res.status(500);
+        }
+    )
 });
 
 module.exports = router;

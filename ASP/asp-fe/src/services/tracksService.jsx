@@ -17,18 +17,25 @@ function getTracks() {
 }
 
 async function addTrack(track) {
+
     const formData = new FormData();
+
+    console.log("track file name info");
+    console.log(track.file);
+    console.log(track);
+
+    formData.append("id", crypto.randomUUID());
     formData.append("title", track.title);
-    formData.append("file", track.file); 
+    formData.append("file", track.file);
     formData.append("releaseType", track.releaseType);
     formData.append("category", track.category);
-    console.log(track.file.data);
-
+    formData.append("releaseName", track.releaseName);
+    
     const response = await fetch("/api/v1/tracks", {
         method: "POST",
-        body: formData, 
-        credentials: "include" 
-    
+        body: formData,
+        credentials: "include"
+
     });
     if (!response.ok) {
         if (response.status === 401 || response.status === 403) {
