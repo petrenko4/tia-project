@@ -107,15 +107,18 @@ function UploadMusic() {
                         </div>
                     )}
                 </div>
-                <div className="form-group">
-                    <label htmlFor="categorySelect">Category:</label>
-                    <select id="categorySelect" value={category} onChange={handleCategoryChange} className="form-control">
-                        <option value="">Select a category</option>
-                        <option value="single">Single</option>
-                        <option value="release">Release</option>
-                        <option value="ep">EP</option>
-                    </select>
-                </div>
+                <select id="categorySelect" value={category} onChange={handleCategoryChange} className="form-control">
+                    <option value="">Select a category</option>
+                    <option value="pop">Pop</option>
+                    <option value="rock">Rock</option>
+                    <option value="hiphop">Hip-Hop</option>
+                    <option value="electronic">Electronic</option>
+                    <option value="jazz">Jazz</option>
+                    <option value="classical">Classical</option>
+                    <option value="country">Country</option>
+                    <option value="rnb">R&B</option>
+                    <option value="others">Others</option>
+                </select>
                 <div className="form-group">
                     <label htmlFor="releaseSelect">Select a Release:</label>
                     <select id="releaseSelect" className="form-control">

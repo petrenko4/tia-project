@@ -1,20 +1,38 @@
 const express = require('express');
 const multer = require('multer');
-const {addRelease, getReleases} = require('../../models/releases');
+const { addRelease, getReleases, getTracksFromRelease } = require('../../models/releases');
 
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-    getReleases().then(
-        (tracks) => {
-            res.status(200).json(tracks.rows);
-        }
-    ).catch(
-        (err) => {
-            console.log(err);
-            res.status(500);
-        }
-    );
+
+    const release_id = req.query.release_id;
+
+    if (release_id) {
+        getTracksFromRelease(release_id).then(
+            (tracks) => {
+                res.status(200).json(tracks.rows);
+            }
+        ).catch(
+            (err) => {
+                console.log(err);
+                res.status(500);
+            }
+        );
+    } else {
+        getReleases().then(
+            (tracks) => {
+                res.status(200).json(tracks.rows);
+            }
+        ).catch(
+            (err) => {
+                console.log(err);
+                res.status(500);
+            }
+        );
+    }
+
+
 });
 
 router.post('/', (req, res, next) => {

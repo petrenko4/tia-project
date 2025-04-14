@@ -15,3 +15,7 @@ exports.addRelease = function(release) {
         [release.id, release.releaseName, release.type, '11111111', release.tracks]
     );    
 };
+
+exports.getTracksFromRelease = function(release_id) {
+    return pool.query("select * from public.tracks where release = $1", [release_id]);    
+};
