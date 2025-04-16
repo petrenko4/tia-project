@@ -1,25 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/commonStyles.css';
-
-const login = (username, password) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (username === 'admin' && password === 'admin') {
-                resolve();
-            } else {
-                reject(new Error('Invalid username or password.'));
-            }
-        }, 1000);
-    });
-};
+import { login } from "../services/authService";
 
 function WelcomeScreen(props) {
-    const [login, setLogin] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleUsernameChange = (event) => {
-        setLogin(event.target.value);
+        setUsername(event.target.value);
     };
 
     const handlePasswordChange = (event) => {
@@ -64,7 +53,7 @@ function WelcomeScreen(props) {
                                 type="text"
                                 id="username"
                                 className="form-control"
-                                value={login}
+                                value={username}
                                 onChange={handleUsernameChange}
                                 placeholder="Enter your username"
                             />
