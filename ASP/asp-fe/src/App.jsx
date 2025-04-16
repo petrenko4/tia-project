@@ -11,6 +11,8 @@ import WelcomeScreen from './pages/WelcomeScreen';
 import UploadMusic from './pages/UploadMusic';
 
 function App() {
+  const [error, setError] = useState('');
+  const [authStatus, setAuthStatus] = useState(false);
 
   return (
     <>
@@ -22,27 +24,27 @@ function App() {
         <Routes>
           <Route
             path = "/"
-            element={<WelcomeScreen/>}
+            element={<WelcomeScreen error = {error} setError = {setError} setAuthStatus = {setAuthStatus}/>}
           />
           <Route
             path="/playlists"
-            element={<PlaylistView/>}
+            element={<PlaylistView error = {error} setError = {setError} setAuthStatus = {setAuthStatus}/>}
           />
           <Route 
             path="/browsing"
-            element={<BrowsingPage/>}
+            element={<BrowsingPage error = {error} setError = {setError} setAuthStatus = {setAuthStatus}/>}
           />
           <Route 
             path="/upload"
-            element={<UploadMusic/>}
+            element={<UploadMusic error = {error} setError = {setError} setAuthStatus = {setAuthStatus}/>}
           />
           <Route 
             path="/library"
-            element={<MusicLibraryPage/>}
+            element={<MusicLibraryPage error = {error} setError = {setError} setAuthStatus = {setAuthStatus}/>}
           />
           <Route 
             path="/newRelease"
-            element={<CreateReleasePage/>}
+            element={<CreateReleasePage error = {error} setError = {setError} setAuthStatus = {setAuthStatus}/>}
           />
         </Routes>
       </BrowserRouter>
