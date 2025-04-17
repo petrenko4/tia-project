@@ -1,16 +1,52 @@
 var express = require('express'); // ESM: import
-var { getUsers } = require('../../models/users.js');
+var { getUsers, addNewUser } = require('../../models/users.js');
 var { comparePassword } = require('../../utils/authHelpers.js');
-const { config } = require('../../config/config.js');
+var pool = require('../../config/db');
+
 var router = express.Router();
+
+router.post("/signup", (req, res) => {
+
+    console.log("signup called");
+    const { id, username, email, password } = req.body;
+
+    try {
+        // 1. Check if username exists
+        pool.query("SELECT * FROM account WHERE login = $1", [username]).then((result) => {
+
+            if (result.rows.length > 0) {
+                return res.status(409).json({ error: "Username already taken" }); // 409 Conflict
+            }
+            addNewUser(req.body)
+                .then(() => {
+                    return res.status(200).end();
+                })
+                .catch((e) => {
+                    console.log(e);
+                    return res.status(500).end();
+                })
+
+        }).catch((err) => {
+            console.log(err);
+            res.status(500).json({ error: "Database error" }).end();
+        });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+
+
+
+});
 
 router.post("/login", (req, res) => {
     const { username, password } = req.body;
     getUsers(username)
-        .then((result) => {            
-            if (result.rows && result.rows.length === 1) {                
+        .then((result) => {
+            if (result.rows && result.rows.length === 1) {
                 const userId = result.rows[0].user_id;
-                const hashedPassword = result.rows[0].password;                
+                const hashedPassword = result.rows[0].password;
                 comparePassword(password, hashedPassword)
                     .then((isValid) => {
                         if (isValid) {
@@ -23,10 +59,10 @@ router.post("/login", (req, res) => {
                             return res.status(401).end();
                         }
                     })
-                    .catch((e) => { 
-                        console.log(e); 
+                    .catch((e) => {
+                        console.log(e);
                         // internal server error
-                        res.status(500).end(); 
+                        res.status(500).end();
                     })
             }
             // user does not exist
@@ -41,8 +77,8 @@ router.post("/login", (req, res) => {
         })
 });
 
-router.delete("/logout", (req, res) => {    
-    if (req.session && req.session.userId) {        
+router.delete("/logout", (req, res) => {
+    if (req.session && req.session.userId) {
         req.session.destroy((err) => {
             if (err) {
                 console.log(err);

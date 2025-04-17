@@ -9,6 +9,7 @@ import './App.css'
 import {getTracks} from './services/tracksService'
 import WelcomeScreen from './pages/WelcomeScreen';
 import UploadMusic from './pages/UploadMusic';
+import SignupPage from './pages/SignupPage';
 
 function App() {
   const [error, setError] = useState('');
@@ -45,6 +46,10 @@ function App() {
           <Route 
             path="/newRelease"
             element={<CreateReleasePage error = {error} setError = {setError} setAuthStatus = {setAuthStatus}/>}
+          />
+          <Route 
+            path="/signup"
+            element={<SignupPage error = {error} setError = {setError} setAuthStatus = {setAuthStatus}/>}
           />
         </Routes>
       </BrowserRouter>

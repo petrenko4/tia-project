@@ -1,11 +1,9 @@
 CREATE TABLE "public"."users" (
   "id" varchar(100) NOT NULL,
   "email" varchar(100) NOT NULL UNIQUE,
-  "username" varchar(100),
+  "username" varchar(100) NOT NULL,
   "date_of_birth" date,
   "gender" varchar(10),
-  "releases" text[] NOT NULL,
-  "playlists" text[] NOT NULL,
   PRIMARY KEY ("id")
 );
 
@@ -19,7 +17,7 @@ CREATE TABLE "public"."playlists" (
   PRIMARY KEY ("id")
 );
 
-CREATE TABLE "public"."account" (
+CREATE TABLE "public"."accounts" (
   "id" varchar(100) NOT NULL,
   "login" varchar(100) NOT NULL UNIQUE,
   "password" varchar(255),

@@ -1,3 +1,7 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { signUp } from '../services/authService';
+
 function SignUpPage(props) {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -94,4 +98,6 @@ function SignUpPage(props) {
             </div>
         </div>
     );
-};
+}
+
+export default SignUpPage;
