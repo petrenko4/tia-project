@@ -44,9 +44,6 @@ function MusicLibraryPage() {
     //     fetchTracks();
     // }, [navigate]);
 
-    console.log("get releases info");
-    console.log(releases);
-
     return (
         // <div className="container mt-5">
         //     <h1>My Music Library</h1>
@@ -57,7 +54,7 @@ function MusicLibraryPage() {
             {releases.length > 0 ? (
                 <ReleaseList releases={releases} />
             ) : (
-                <p>Loading releases...</p>
+                <p>No releases yet</p>
             )}
         </div>
 

@@ -2,6 +2,7 @@ var express = require('express'); // ESM: import
 var { getUsers, addNewUser } = require('../../models/users.js');
 var { comparePassword } = require('../../utils/authHelpers.js');
 var pool = require('../../config/db');
+const config = require('../../config/config');
 
 var router = express.Router();
 
@@ -12,7 +13,7 @@ router.post("/signup", (req, res) => {
 
     try {
         // 1. Check if username exists
-        pool.query("SELECT * FROM account WHERE login = $1", [username]).then((result) => {
+        pool.query("SELECT * FROM accounts WHERE login = $1", [username]).then((result) => {
 
             if (result.rows.length > 0) {
                 return res.status(409).json({ error: "Username already taken" }); // 409 Conflict
@@ -45,8 +46,11 @@ router.post("/login", (req, res) => {
     getUsers(username)
         .then((result) => {
             if (result.rows && result.rows.length === 1) {
-                const userId = result.rows[0].user_id;
+                const userId = result.rows[0].id;
                 const hashedPassword = result.rows[0].password;
+                console.log(result.rows[0]);
+                console.log("hashed psswd: " + hashedPassword);
+                console.log(userId);
                 comparePassword(password, hashedPassword)
                     .then((isValid) => {
                         if (isValid) {

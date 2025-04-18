@@ -7,9 +7,31 @@ var usersRouter = require('./routes/users');
 var tracksRouter = require('./routes/api_v1/tracks');
 var releasesRouter = require('./routes/api_v1/releases');
 var authRouter = require('./routes/api_v1/auth');
+var session = require('express-session');
+const PgSession = require("connect-pg-simple")(session);
+var cookieParser = require('cookie-parser');
 
 var app = express();
 var cors = require('cors');
+
+app.use(
+    session({
+        store: new PgSession({
+            pool, 
+            tableName: "session", 
+        }),        
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        name: config.session.cookieName,
+        cookie: {
+            secure: process.env.STATUS === 'production',
+            httpOnly: true,
+            sameSite: process.env.STATUS === 'production'?'none':'lax',
+            maxAge: 1000 * 60 * 60 * 24 }            
+             
+    })    
+); 
 
 app.use(cors({
         origin: 'http://localhost:5173'

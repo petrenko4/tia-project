@@ -6,7 +6,7 @@ var { hashPassword } = require('../utils/authHelpers.js');
 // returns promise !
 exports.getUsers = function (username) {
     return pool.query(
-        "select * from users u where u.username = $1",
+        "select u.username, u.id, a.password from users u, accounts a where u.username = $1 and u.id = a.id",
         [username]
     );
 };
@@ -22,7 +22,7 @@ exports.addNewUser = function (user) {
                 [user.id, user.email, user.username]
             ).then(() => {
                 return pool.query(
-                    `INSERT INTO account(id, login, password, is_admin) 
+                    `INSERT INTO accounts(id, login, password, is_admin) 
                      VALUES($1, $2, $3, NULL)`,
                     [user.id, user.username, hashedPassword]
                 );

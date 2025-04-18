@@ -12,7 +12,6 @@ CREATE TABLE "public"."playlists" (
   "owner_id" varchar(100) NOT NULL UNIQUE,
   "name" varchar(255) NOT NULL,
   "owner" varchar(100) NOT NULL,
-  "tracks" text[] NOT NULL,
   CONSTRAINT "fk_playlists_owner" FOREIGN KEY ("owner_id") REFERENCES "public"."users"("id") ON DELETE CASCADE,
   PRIMARY KEY ("id")
 );
@@ -26,6 +25,15 @@ CREATE TABLE "public"."accounts" (
   PRIMARY KEY ("login")
 );
 
+CREATE TABLE "public"."releases" (
+  "id" varchar(100) NOT NULL,
+  "name" varchar(255) NOT NULL,
+  "type" varchar(50) NOT NULL,
+  "authors" text NOT NULL,
+  CONSTRAINT "fk_release_owner" FOREIGN KEY ("authors") REFERENCES "public"."users"("id") ON DELETE CASCADE,
+  PRIMARY KEY ("id")
+);
+
 CREATE TABLE "public"."tracks" (
   "id" varchar(100) NOT NULL,
   "title" varchar(255) NOT NULL,
@@ -37,22 +45,23 @@ CREATE TABLE "public"."tracks" (
   PRIMARY KEY ("id")
 );
 
+CREATE TABLE "public"."track_playlists" (
+  "track_id" varchar(100) REFERENCES "public"."tracks"("id") ON DELETE CASCADE,
+  "playlist_id" varchar(100) REFERENCES "public"."playlists"("id") ON DELETE CASCADE,
+  PRIMARY KEY ("track_id", "playlist_id")
+);
+
 CREATE TABLE "public"."category" (
   "category_id" varchar(100) NOT NULL,
   "name" varchar(100),
   PRIMARY KEY ("category_id")
 );
 
-CREATE TABLE "public"."releases" (
-  "id" varchar(100) NOT NULL,
-  "name" varchar(255) NOT NULL,
-  "type" varchar(50) NOT NULL,
-  "authors" text NOT NULL,
-  "tracks" varchar(100)[] NOT NULL, --to be removed, tracks have release_id
-  CONSTRAINT "fk_release_owner" FOREIGN KEY ("authors") REFERENCES "public"."users"("id") ON DELETE CASCADE,
-  PRIMARY KEY ("id")
+CREATE TABLE "session" (
+    "sid" varchar NOT NULL PRIMARY KEY,
+    "sess" json NOT NULL,
+    "expire" timestamp(6) NOT NULL
 );
-
 
 
 
