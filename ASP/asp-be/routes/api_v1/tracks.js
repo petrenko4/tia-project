@@ -21,44 +21,56 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.get('/', (req, res, next) => {
-    getTracks().then(
-        (tracks) => {
-            res.status(200).json(tracks.rows);
-        }
-    ).catch(
-        (err) => {
-            console.log(err);
-            res.status(500);
-        }
-    );
+
+    if (req.session && req.session.userId) {
+
+        getTracks().then(
+            (tracks) => {
+                res.status(200).json(tracks.rows);
+            }
+        ).catch(
+            (err) => {
+                console.log(err);
+                res.status(500);
+            }
+        );
+    } else {
+        res.status(401).end();
+    }
 });
 
 router.post('/', upload.single('file'), (req, res, next) => {
-    const { id, title, release_id, category } = req.body;
-    const file = req.file;
-    console.log(file);
-    if (!title || !release_id || !category  || !file) {
-        return res.status(400).json({ error: "Missing fields in request" });
-    }
-    console.log("req body info");
-    console.log(req.body);
-    
-    trackData = {
-        id,
-        title,
-        release_id,
-        category,
-        file: file.filename
-    };
 
-    addTracks(trackData).then(
-        (r) => res.status(200)
-    ).catch(
-        (e) => {
-            console.log(e);
-            res.status(500);
+    if (req.session && req.session.userId) {
+
+        const { id, title, release_id, category } = req.body;
+        const file = req.file;
+        console.log(file);
+        if (!title || !release_id || !category || !file) {
+            return res.status(400).json({ error: "Missing fields in request" });
         }
-    )
+        console.log("req body info");
+        console.log(req.body);
+
+        trackData = {
+            id,
+            title,
+            release_id,
+            category,
+            file: file.filename
+        };
+
+        addTracks(trackData).then(
+            (r) => res.status(200)
+        ).catch(
+            (e) => {
+                console.log(e);
+                res.status(500);
+            }
+        )
+    } else {
+        res.status(401).end();
+    }
 });
 
 module.exports = router;

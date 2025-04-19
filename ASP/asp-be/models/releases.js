@@ -1,21 +1,27 @@
 const pool = require('../config/db');
 
 
-exports.getReleases = function () {
+exports.getReleases = function (user_id) {
     return pool.query(
-        `select * 
-        from public.releases 
-        `
+        `select r.id, r.name, r.type, r.authors 
+        from public.releases r, public.users u
+        where r.authors = u.id and u.id = $1
+        `, [user_id]
     );
 };
 
-exports.addRelease = function(release) {
+exports.addRelease = function(release, userId) {
     console.log(release);
-    return pool.query(`insert into releases(id, name, release_type, authors, tracks) values($1, $2, $3, $4, $5)`, 
-        [release.id, release.releaseName, release.type, '11111111', release.tracks]
+    return pool.query(`insert into releases(id, name, type, authors) values($1, $2, $3, $4)`, 
+        [release.id, release.releaseName, release.type, userId]
     );    
 };
 
-exports.getTracksFromRelease = function(release_id) {
-    return pool.query(`select * from public.tracks where release = $1`, [release_id]);    
+exports.getTracksFromRelease = function(release_id, user_id) {
+    console.log("release_id: " + release_id);
+    console.log("user_id: " + user_id);
+    return pool.query(
+        `select * from public.tracks t where t.release = $1
+        `, [release_id]
+    );    
 };

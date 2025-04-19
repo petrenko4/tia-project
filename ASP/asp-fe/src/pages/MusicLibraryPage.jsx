@@ -7,7 +7,7 @@ import { getReleases } from '../services/releaseService';
 // import { TrackList } from '../components/TrackList';
 import ReleaseList from '../components/ReleaseList';
 
-function MusicLibraryPage() {
+function MusicLibraryPage(props) {
     const [tracks, setTracks] = useState([]);
     const [releases, setReleases] = useState([]);
     const navigate = useNavigate();
@@ -25,6 +25,7 @@ function MusicLibraryPage() {
     const fetchReleases = () => {
         getReleases()
             .then((releases) => {
+                console.log("releases(library): " + JSON.stringify(releases));
                 setReleases(releases);
             })
             .catch((error) => {
@@ -37,6 +38,10 @@ function MusicLibraryPage() {
     // }, []);
 
     useEffect(() => {
+        if (! props.authStatus) {
+            props.setError("Not authenticated"),            
+            navigate('/')
+        }
         fetchReleases();
     }, []);
 

@@ -9,6 +9,7 @@ function Release({ release }) {
     const [tracks, setTracksFromRelease] = useState([]);
 
     useEffect(() => {
+        console.log("release id fe:" + release.id);
         getTracksFromRelease(release.id)
             .then((tracks) => {
                 setTracksFromRelease(tracks);
@@ -24,7 +25,7 @@ function Release({ release }) {
     return (
         <div>
             <h2>{release.name}</h2>
-            <p>Type: {release.release_type}</p>
+            <p>Type: {release.type}</p>
             <TrackList tracks={tracks} />
         </div>
     );

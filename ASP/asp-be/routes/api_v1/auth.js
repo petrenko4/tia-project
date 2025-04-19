@@ -2,7 +2,7 @@ var express = require('express'); // ESM: import
 var { getUsers, addNewUser } = require('../../models/users.js');
 var { comparePassword } = require('../../utils/authHelpers.js');
 var pool = require('../../config/db');
-const config = require('../../config/config');
+const { config } = require('../../config/config');
 
 var router = express.Router();
 

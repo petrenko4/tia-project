@@ -10,7 +10,8 @@ var authRouter = require('./routes/api_v1/auth');
 var session = require('express-session');
 const PgSession = require("connect-pg-simple")(session);
 var cookieParser = require('cookie-parser');
-
+var pool = require('./config/db');
+const {config} = require('./config/config');
 var app = express();
 var cors = require('cors');
 

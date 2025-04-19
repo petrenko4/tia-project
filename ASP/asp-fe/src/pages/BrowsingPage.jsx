@@ -1,5 +1,5 @@
 import '../styles/commonStyles.css'
-function BrowsingPage() {
+function BrowsingPage(props) {
 
     return (
         <div className="row mb-3 d-flex justify-content-center align-items-center ">

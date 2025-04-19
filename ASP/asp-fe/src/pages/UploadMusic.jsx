@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getReleases } from '../services/releaseService';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function UploadMusic() {
+function UploadMusic(props) {
     const navigate = useNavigate();
     const [selectedFile, setSelectedFile] = useState(null);
     const [trackName, setTrackName] = useState('');
@@ -14,6 +14,10 @@ function UploadMusic() {
     const [releases, setReleases] = useState([]);
 
     useEffect(() => {
+        if (!props.authStatus) {
+            props.setError("Not authenticated"),
+                navigate('/')
+        }
         getReleases()
             .then((data) => {
                 setReleases(data);
