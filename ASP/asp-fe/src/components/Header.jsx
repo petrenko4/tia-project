@@ -1,12 +1,49 @@
-function Header() {
+import { logout } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
+
+function Header(props) {
+
+    const navigate = useNavigate();
+
+    console.log(props.authStatus);
+
+    function handleLogout() {
+        logout()
+            .then(() => {
+                props.setAuthStatus(false);
+                navigate('/');
+            })
+            .catch((error) => {
+                console.log(error.message);
+                props.setError(error.message)
+            });
+    }
+
     return (
-        <div className="container-fluid">
-            <div className="row">
-                <div className="col-12 text-center">
-                    <h1 style={{ fontSize: "4rem", fontWeight: "bold" }} className="display-1">ASP</h1>
+        <>
+            <div className="row mb-3">
+                <div className="col-sm-5 text-start">
+                    <div className="h3 py-2">ASP</div>
+                </div>
+                <div className="col-sm" />
+                <div className="col-sm-3 py-2">
+                    {props.authStatus &&
+                        <button
+                            className="navigation-buttons"
+                            onClick={handleLogout}>
+                            Logout
+                        </button>}
+
                 </div>
             </div>
-        </div>
+            <div className="row">
+                {props.error && <div className="alert alert-danger mt-2">
+                    <p className="text-danger">{props.error}</p>
+                </div>}
+            </div>
+        </>
+
+
     )
 }
 

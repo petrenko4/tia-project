@@ -1,25 +1,50 @@
 const express = require('express');
 const multer = require('multer');
-const {addRelease, getReleases} = require('../../models/releases');
+const { addRelease, getReleases, getTracksFromRelease } = require('../../models/releases');
 
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-    getReleases().then(
-        (tracks) => {
-            res.status(200).json(tracks.rows);
+
+    console.log(req.session);
+    console.log(req.sessionID);
+
+    if (req.session && req.session.userId) {
+        const release_id = req.query.release_id;
+
+        if (release_id) {
+            getTracksFromRelease(release_id, req.session.userId).then(
+                (tracks) => {
+                    console.log("tracksfrrel:\n" + tracks.rows);
+                    res.status(200).json(tracks.rows);
+                }
+            ).catch(
+                (err) => {
+                    console.log(err);
+                    res.status(500);
+                }
+            );
+        } else {
+            getReleases(req.session.userId).then(
+                (tracks) => {
+                    res.status(200).json(tracks.rows);
+                }
+            ).catch(
+                (err) => {
+                    console.log(err);
+                    res.status(500);
+                }
+            );
         }
-    ).catch(
-        (err) => {
-            console.log(err);
-            res.status(500);
-        }
-    );
+    } else {
+        res.status(401).end();
+    }
+
 });
 
 router.post('/', (req, res, next) => {
     console.log("post invoked");
-    const { id, releaseName, type, category, tracks } = req.body;
+    const { id, releaseName, type, category} = req.body;
     console.log(req.body);
     if (!releaseName || !type) {
         return res.status(400).json({ error: "Missing fields in request" });
@@ -29,16 +54,22 @@ router.post('/', (req, res, next) => {
         releaseName,
         type,
         category,
-        tracks
     };
-    addRelease(releaseData).then(
-        (r) => res.status(200)
-    ).catch(
-        (e) => {
-            console.log(e);
-            res.status(500);
-        }
-    )
+    console.log("userId post request: " + req.session.userId);
+    if (req.session && req.session.userId) {
+        addRelease(releaseData, req.session.userId).then(
+            (r) => res.status(200)
+        ).catch(
+            (e) => {
+                console.log(e);
+                res.status(500);
+            }
+        )
+    }else {
+        res.status(401).end();
+    }
+    
+
 });
 
 module.exports = router;

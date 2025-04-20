@@ -1,0 +1,41 @@
+import { getTracksFromRelease } from "../services/releaseService";
+import TrackList from "./TrackList";
+import { useState, useEffect } from "react";
+import "../styles/Release.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+function Release({ release }) {
+
+    const [tracks, setTracksFromRelease] = useState([]);
+
+    useEffect(() => {
+        console.log("release id fe:" + release.id);
+        getTracksFromRelease(release.id)
+            .then((tracks) => {
+                setTracksFromRelease(tracks);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, [release.id, release.length]);
+
+    console.log("release name:" + release.name);
+    console.log("release tracks:" + tracks.map((track) => track.title));
+    console.log("release tracks length:" + tracks.length);
+    return (
+        <div className="card release-card mb-4">
+            <div className="card-header release-header">
+                {release.name}
+            </div>
+            <div className="card-body">
+                <p className="release-info">Type: {release.type}</p>
+                <div className="track-list-wrapper">
+                    <TrackList tracks={tracks} />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Release;

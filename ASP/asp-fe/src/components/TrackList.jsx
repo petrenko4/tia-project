@@ -11,12 +11,18 @@ function EmptyTrackList() {
 }
 
 function TrackList({ tracks }) {
+    console.log(tracks);
     let trackList = tracks.map((track) => <Track
         key={track.track_id}
         track={track}
     ></Track>);
     let emptyTrackList = <EmptyTrackList></EmptyTrackList>;
-    return trackList.length > 0 ? trackList : emptyTrackList;
+    return (
+        <div className="track-list-wrapper">
+                
+            {trackList.length > 0 ? trackList : <EmptyTrackList />}
+        </div>
+    );
 }
 
-export { TrackList} ;
+export default TrackList;
