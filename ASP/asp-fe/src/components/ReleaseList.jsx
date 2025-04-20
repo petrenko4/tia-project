@@ -16,7 +16,11 @@ function ReleaseList({ releases }) {
         release={release}
     ></Release>);
     let emptyReleaseList = <EmptyReleaseList></EmptyReleaseList>;
-    return releaseList.length > 0 ? releaseList : emptyReleaseList;
+    return (
+        <div className="track-list-wrapper">
+            {releaseList.length > 0 ? releaseList : emptyReleaseList}
+        </div>
+    );
 }
 
 

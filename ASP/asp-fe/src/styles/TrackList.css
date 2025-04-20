@@ -1,0 +1,15 @@
+.track-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;      
+  padding: 1rem;
+}
+
+.track-list-wrapper {
+  background-color: #b8c0c8;
+  border: 1px solid #0e005b;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0;
+}

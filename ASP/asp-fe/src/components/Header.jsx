@@ -29,7 +29,7 @@ function Header(props) {
                 <div className="col-sm-3 py-2">
                     {props.authStatus &&
                         <button
-                            className="btn btn-primary"
+                            className="navigation-buttons"
                             onClick={handleLogout}>
                             Logout
                         </button>}
@@ -37,9 +37,9 @@ function Header(props) {
                 </div>
             </div>
             <div className="row">
-                <div className="alert alert-danger mt-2">
-                    {props.error && <p className="text-danger">{props.error}</p>}
-                </div>
+                {props.error && <div className="alert alert-danger mt-2">
+                    <p className="text-danger">{props.error}</p>
+                </div>}
             </div>
         </>
 
