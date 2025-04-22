@@ -3,6 +3,7 @@ import { addTrack } from '../services/tracksService';
 import { useNavigate } from "react-router-dom";
 import { getReleases } from '../services/releaseService';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/Upload.css';
 
 function UploadMusic(props) {
     const navigate = useNavigate();
