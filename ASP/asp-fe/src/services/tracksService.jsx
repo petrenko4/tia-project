@@ -35,7 +35,7 @@ async function addTrack(track) {
         }
         throw new Error("Error adding new track");
     }
-    return await response.json();
+    return await response.status;
 }
 
 export { getTracks, addTrack };

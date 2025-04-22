@@ -17,7 +17,7 @@ function UploadMusic(props) {
     useEffect(() => {
         if (!props.authStatus) {
             props.setError("Not authenticated"),
-                navigate('/')
+                navigate("/")
         }
         getReleases()
             .then((data) => {
@@ -46,14 +46,22 @@ function UploadMusic(props) {
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
         } else {
-            checkFileExists(track.file).then((exists) => {
-                if (exists) {
-                    setErrors({ file: 'File already exists' });
-                } else {
-                    addTrack(track);
+            addTrack(track)
+                .then(() => {
+                    props.setError('');
+                    console.log("NAVIGATING");
                     navigate("/library");
-                }
-            });
+                })
+                .catch((error) => {
+                    console.log(error.message);
+                    props.setError(error.message);
+                    // not authenticated - navigate to login page 
+                    if (error.message === 'Not authenticated') {
+                        props.setAuthStatus(false);
+                        navigate("/");
+                    }
+                })
+
         }
     };
 
@@ -68,25 +76,8 @@ function UploadMusic(props) {
         if (!track.release_id) {
             errors.release_id = 'Release is required';
         }
-        console.log(errors); 
+        console.log(errors);
         return errors;
-    };
-
-    const checkFileExists = (file) => {
-        const fileName = file.name;
-        const url = `http://localhost:3000/uploads/${file.name}`;
-        return fetch(url)
-            .then((response) => {
-                if (response.status === 200) {
-                    return true;
-                } else {
-                    return false;
-                }
-            })
-            .catch((error) => {
-                console.error(error);
-                return false;
-            });
     };
 
     return (

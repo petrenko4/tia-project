@@ -2,7 +2,7 @@
 - Name and Surname: Dmytro Petrenko
 - Project Title: ASP
 - Repository Link: https://github.com/petrenko4/tia-project.git
-- Public Project Instance Link: TBD
+- Public Project Instance Link: https://nottify-c31l.onrender.com
 
 # Reported Version Info:
 - Tag: beta <!-- State the tag, e.g., beta_subversionNumber, if changes were made before the submission deadline -->
@@ -10,7 +10,6 @@
 # Testing Info:
 <!-- Provide credentials for test users if needed for testing your beta version. Also include any other relevant information for testing. You may alternatively send this information via email with your beta submission (e.g., if you don’t want to share test credentials publicly). -->
 - No test credentials are needed — the website includes a Sign Up feature, so testers can create their own accounts and generate testing data independently.
-
 
 # How to Set Up the Development Environment
 <!-- Steps to run the development environment locally (use Docker/Docker Compose if you’re comfortable with it) -->
@@ -32,4 +31,5 @@
 
 # Issues:
 <!-- Describe any problems you encountered. If there were none, explicitly state that. -->
-The core functionality works, but the UI still needs design improvements to make it look more appealing. :)
+- The core functionality works, but the UI still needs design improvements to make it look more appealing. :)
+- For deployment, I had to change the way of storing uploaded files by configuring the application to upload them to Amazon S3 instead of storing them locally.

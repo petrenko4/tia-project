@@ -46,6 +46,7 @@ const CreateReleasePage = (props) => {
             .then((response) => {
                 console.log('Release added successfully:', response);
                 fetchReleases(); // Refresh the releases list
+                navigate("/library");
             })
             .catch((error) => {
                 console.error('Error adding release:', error);
