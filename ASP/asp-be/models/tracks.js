@@ -11,7 +11,7 @@ exports.getTracks = function () {
 
 exports.addTracks = function(track) {
     return pool.query("insert into tracks(id, title, release, category, file) values($1, $2, $3, $4, $5)", 
-        [track.id, track.title, track.release_id, track.category, '/uploads/' + track.file]
+        [track.id, track.title, track.release_id, track.category, track.file]
     );    
 };
 

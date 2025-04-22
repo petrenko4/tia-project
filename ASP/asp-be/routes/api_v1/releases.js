@@ -25,8 +25,8 @@ router.get('/', (req, res, next) => {
             );
         } else {
             getReleases(req.session.userId).then(
-                (tracks) => {
-                    res.status(200).json(tracks.rows);
+                (release) => {
+                    res.status(200).json(release.rows);
                 }
             ).catch(
                 (err) => {
@@ -54,11 +54,11 @@ router.post('/', (req, res, next) => {
     };
     if (req.session && req.session.userId) {
         addRelease(releaseData, req.session.userId).then(
-            (r) => res.status(200)
+            (r) => res.status(200).end()
         ).catch(
             (e) => {
                 console.log(e);
-                res.status(500);
+                res.status(500).end();
             }
         )
     }else {

@@ -52,7 +52,7 @@ async function addRelease(release) {
     if (!response.ok) {
         throw new Error("Error adding new release");
     }
-    return await response.json();
+    return await response.status;
 }
 
 export { getReleases, addRelease, getTracksFromRelease };

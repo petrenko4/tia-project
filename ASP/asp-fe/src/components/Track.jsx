@@ -10,7 +10,7 @@ function Track({ track }) {
             <h5 className="card-title">{track.title}</h5>
             <p className="card-text mb-2"><strong>Category:</strong> {track.category}</p>
             <audio controls className="w-100">
-              <source src={`http://localhost:3000${track.file}`} type="audio/mpeg" />
+              <source src={track.file} type="audio/mpeg" />
               Your browser does not support the audio element.
             </audio>
           </div>

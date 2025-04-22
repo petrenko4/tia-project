@@ -10,7 +10,6 @@ function Release({ release }) {
     const [tracks, setTracksFromRelease] = useState([]);
 
     useEffect(() => {
-        console.log("release id fe:" + release.id);
         getTracksFromRelease(release.id)
             .then((tracks) => {
                 setTracksFromRelease(tracks);
@@ -18,7 +17,7 @@ function Release({ release }) {
             .catch((error) => {
                 console.error(error);
             });
-    }, [release.id, release.length]);
+    }, [release.id]);
 
     return (
         <div className="card release-card mb-4">

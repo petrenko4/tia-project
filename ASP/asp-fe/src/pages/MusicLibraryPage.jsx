@@ -21,13 +21,24 @@ function MusicLibraryPage(props) {
             });
     };
 
+    const fetchTracks = () => {
+        getTracks()
+            .then((tracks) => {
+                setTracks(tracks);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     useEffect(() => {
         if (! props.authStatus) {
             props.setError("Not authenticated"),            
             navigate('/')
         }
+        fetchTracks();
         fetchReleases();
-    }, []);
+    }, [navigate]);
 
     return (
         <div className="container mt-5">
