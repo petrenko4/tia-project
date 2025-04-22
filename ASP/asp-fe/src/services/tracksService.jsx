@@ -1,16 +1,13 @@
 
 
 function getTracks() {
-    return fetch("/api/v1/tracks").then(  // promise is resolved
+    return fetch("/api/v1/tracks").then(  
         (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
+            if (!response.ok) { 
                 throw new Error("Error getting messages");
             }
             return response.json();
-        }).catch((error) => {               // promise is rejected  
-            // Better way would be to throw error here and let the 
-            // client handle (e.g. show error message)
-            // Returning empty array for simplicity only!
+        }).catch((error) => {               
             console.log("Error getting messages");
             return [];
         });
@@ -19,10 +16,6 @@ function getTracks() {
 async function addTrack(track) {
 
     const formData = new FormData();
-
-    console.log("track file name info");
-    console.log(track.file);
-    console.log(track);
 
     formData.append("id", crypto.randomUUID());
     formData.append("title", track.title);

@@ -16,9 +16,7 @@ function SignUpPage(props) {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
-        // prevent page reload
         e.preventDefault();
-        // basic validation  
         if (username === '' || email === '' || password === '' || confirmPassword === '') {
             props.setError('All fields are required!');
             return;
@@ -39,7 +37,6 @@ function SignUpPage(props) {
                 props.setError(error.message)
             });
 
-        // reset error message if the form is valid
         props.setError('');
     };
     

@@ -15,7 +15,6 @@ router.get('/', (req, res, next) => {
         if (release_id) {
             getTracksFromRelease(release_id, req.session.userId).then(
                 (tracks) => {
-                    console.log("tracksfrrel:\n" + tracks.rows);
                     res.status(200).json(tracks.rows);
                 }
             ).catch(
@@ -43,9 +42,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    console.log("post invoked");
     const { id, releaseName, type, category} = req.body;
-    console.log(req.body);
     if (!releaseName || !type) {
         return res.status(400).json({ error: "Missing fields in request" });
     }
@@ -55,7 +52,6 @@ router.post('/', (req, res, next) => {
         type,
         category,
     };
-    console.log("userId post request: " + req.session.userId);
     if (req.session && req.session.userId) {
         addRelease(releaseData, req.session.userId).then(
             (r) => res.status(200)

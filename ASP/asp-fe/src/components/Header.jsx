@@ -5,8 +5,6 @@ function Header(props) {
 
     const navigate = useNavigate();
 
-    console.log(props.authStatus);
-
     function handleLogout() {
         logout()
             .then(() => {

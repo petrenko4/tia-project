@@ -8,7 +8,6 @@ var router = express.Router();
 
 router.post("/signup", (req, res) => {
 
-    console.log("signup called");
     const { id, username, email, password } = req.body;
 
     try {
@@ -48,9 +47,6 @@ router.post("/login", (req, res) => {
             if (result.rows && result.rows.length === 1) {
                 const userId = result.rows[0].id;
                 const hashedPassword = result.rows[0].password;
-                console.log(result.rows[0]);
-                console.log("hashed psswd: " + hashedPassword);
-                console.log(userId);
                 comparePassword(password, hashedPassword)
                     .then((isValid) => {
                         if (isValid) {

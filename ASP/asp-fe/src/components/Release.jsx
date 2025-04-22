@@ -20,9 +20,6 @@ function Release({ release }) {
             });
     }, [release.id, release.length]);
 
-    console.log("release name:" + release.name);
-    console.log("release tracks:" + tracks.map((track) => track.title));
-    console.log("release tracks length:" + tracks.length);
     return (
         <div className="card release-card mb-4">
             <div className="card-header release-header">

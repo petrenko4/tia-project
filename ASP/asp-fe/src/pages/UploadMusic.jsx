@@ -34,7 +34,6 @@ function UploadMusic(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const releaseId = document.getElementById('releaseSelect').value;
-        console.log(releaseId);
         const track = {
             title: trackName,
             file: selectedFile,
@@ -68,7 +67,7 @@ function UploadMusic(props) {
         if (!track.release_id) {
             errors.release_id = 'Release is required';
         }
-        console.log(errors); // Object.keys(errors)
+        console.log(errors); 
         return errors;
     };
 

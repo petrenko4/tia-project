@@ -49,8 +49,6 @@ router.post('/', upload.single('file'), (req, res, next) => {
         if (!title || !release_id || !category || !file) {
             return res.status(400).json({ error: "Missing fields in request" });
         }
-        console.log("req body info");
-        console.log(req.body);
 
         trackData = {
             id,

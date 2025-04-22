@@ -6,10 +6,7 @@ function getReleases() {
                 throw new Error("Error getting messages");
             }
             return response.json();
-        }).catch((error) => {               // promise is rejected  
-            // Better way would be to throw error here and let the 
-            // client handle (e.g. show error message)
-            // Returning empty array for simplicity only!
+        }).catch((error) => {               
             console.log("Error getting messages");
             return [];
         });
@@ -28,10 +25,7 @@ function getTracksFromRelease(release_id) {
                 throw new Error("Error getting messages");
             }
             return response.json();
-        }).catch((error) => {               // promise is rejected  
-            // Better way would be to throw error here and let the 
-            // client handle (e.g. show error message)
-            // Returning empty array for simplicity only!
+        }).catch((error) => {               
             console.log("Error getting messages");
             return [];
         });

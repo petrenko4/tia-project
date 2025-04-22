@@ -11,7 +11,6 @@ function EmptyTrackList() {
 }
 
 function TrackList({ tracks }) {
-    console.log(tracks);
     let trackList = tracks.map((track) => <Track
         key={track.track_id}
         track={track}
