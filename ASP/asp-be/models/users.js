@@ -12,8 +12,6 @@ exports.getUsers = function (username) {
 };
 
 exports.addNewUser = function (user) {
-    console.log("addNewUser called");
-    console.log(user)
     return hashPassword(user.password)
         .then((hashedPassword) => {
             return pool.query(

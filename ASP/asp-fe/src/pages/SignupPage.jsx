@@ -29,8 +29,7 @@ function SignUpPage(props) {
 
         signUp(username, email, password)
             .then(() => {
-                props.setAuthStatus(true);
-                navigate('/releases');
+                navigate('/');
             })
             .catch((error) => {
                 console.log(error.message);

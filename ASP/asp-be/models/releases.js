@@ -11,15 +11,12 @@ exports.getReleases = function (user_id) {
 };
 
 exports.addRelease = function(release, userId) {
-    console.log(release);
     return pool.query(`insert into releases(id, name, type, authors) values($1, $2, $3, $4)`, 
         [release.id, release.releaseName, release.type, userId]
     );    
 };
 
 exports.getTracksFromRelease = function(release_id, user_id) {
-    console.log("release_id: " + release_id);
-    console.log("user_id: " + user_id);
     return pool.query(
         `select * from public.tracks t where t.release = $1
         `, [release_id]
