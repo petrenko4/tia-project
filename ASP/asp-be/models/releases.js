@@ -3,7 +3,7 @@ const pool = require('../config/db');
 
 exports.getReleases = function (user_id) {
     return pool.query(
-        `select r.id, r.name, r.type, r.authors 
+        `select r.id, r.name, r.type, r.authors
         from public.releases r, public.users u
         where r.authors = u.id and u.id = $1
         `, [user_id]

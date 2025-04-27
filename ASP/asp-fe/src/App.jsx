@@ -34,7 +34,7 @@ function App() {
             />
             <Route
               path="/browsing"
-              element={<BrowsingPage error={error} setError={setError} setAuthStatus={setAuthStatus} />}
+              element={<BrowsingPage error={error} setError={setError} setAuthStatus={setAuthStatus} authStatus={authStatus}/>}
             />
             <Route
               path="/upload"

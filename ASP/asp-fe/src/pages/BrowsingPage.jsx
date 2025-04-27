@@ -1,14 +1,91 @@
-import '../styles/commonStyles.css'
+import React, { useState, useEffect } from 'react';
+import { getTracks } from '../services/tracksService';
+import { getReleases } from '../services/releaseService';
+import ReleaseList from '../components/ReleaseList';
+import TrackList from '../components/TrackList';
+import { useNavigate } from 'react-router-dom';
+
 function BrowsingPage(props) {
+    const [tracks, setTracks] = useState([]);
+    const [releases, setReleases] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchMode, setSearchMode] = useState('tracks'); // 'tracks' or 'releases'
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!props.authStatus) {
+            props.setError("Not authenticated"),
+                navigate('/')
+        }
+        getTracks()
+            .then(data => {
+                if (data.error) throw new Error(data.error);
+                setTracks(data);
+            })
+            .catch(error => console.error(error));
+
+        getReleases()
+            .then(data => {
+                if (data.error) throw new Error(data.error);
+                setReleases(data);
+            })
+            .catch(error => console.error(error));
+    }, []);
+
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleModeChange = (event) => {
+        setSearchMode(event.target.value);
+        setSearchTerm(''); // clear search when switching modes
+    };
+
+    const filteredTracks = tracks.filter((track) =>
+        track.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    const filteredReleases = releases.filter((release) =>
+        release.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
-        <div className="row mb-3 d-flex justify-content-center align-items-center ">
-            <div className="col-sm-3 text-start">
-                <div className="h3 py-1">Here you can browse music</div>
+        <div className="container mt-5">
+            <h1>Music Browser</h1>
+
+            {/* Search Controls */}
+            <div className="form-group mb-3">
+                <label htmlFor="searchModeSelect">Search by:</label>
+                <select
+                    id="searchModeSelect"
+                    value={searchMode}
+                    onChange={handleModeChange}
+                    className="form-control"
+                >
+                    <option value="tracks">Tracks</option>
+                    <option value="releases">Releases</option>
+                </select>
             </div>
-            <div className="col-sm" />
+
+            <div className="form-group mb-4">
+                <input
+                    type="text"
+                    placeholder={`Search by ${searchMode === 'tracks' ? 'song title' : 'release name'}...`}
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    className="form-control"
+                />
+            </div>
+
+            {/* Results */}
+            {searchMode === 'tracks' ? (
+                <TrackList tracks={filteredTracks} />
+            ) : (
+                <ReleaseList releases={filteredReleases} />
+            )}
         </div>
-    )
+    );
 }
 
 export default BrowsingPage;

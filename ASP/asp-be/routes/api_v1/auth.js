@@ -50,7 +50,8 @@ router.post("/login", (req, res) => {
                 comparePassword(password, hashedPassword)
                     .then((isValid) => {
                         if (isValid) {
-                            req.session.userId = userId;  // creates session
+                            req.session.userId = userId;  //production creates session
+                            //console.log("session: ", req.session.userId);
                             return res.status(200).end();
                         }
                         // invalid password
