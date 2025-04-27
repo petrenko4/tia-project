@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/commonStyles.css';
 import '../styles/tracklistStyles.css';
-import { getTracks } from '../services/tracksService';
+import { getTracks, deleteTrack } from '../services/tracksService';
 import { getReleases } from '../services/releaseService';
 import ReleaseList from '../components/ReleaseList';
 
@@ -32,19 +32,28 @@ function MusicLibraryPage(props) {
     };
 
     useEffect(() => {
-        if (! props.authStatus) {
-            props.setError("Not authenticated"),            
-            navigate('/')
+        if (!props.authStatus) {
+            props.setError("Not authenticated"),
+                navigate('/')
         }
         fetchTracks();
         fetchReleases();
     }, [navigate]);
 
+    const handleDelete = async (trackId) => {
+        deleteTrack(trackId).then((response) => {
+            console.log('Track deleted successfully');
+            fetchTracks();
+            fetchReleases();
+            console.log('Releases updated');
+        });
+    };
+
     return (
         <div className="container mt-5">
             <h1>My releases</h1>
             {releases.length > 0 ? (
-                <ReleaseList releases={releases} />
+                <ReleaseList releases={releases} onDelete={handleDelete} allTracks = {tracks} />
             ) : (
                 <p>No releases yet</p>
             )}

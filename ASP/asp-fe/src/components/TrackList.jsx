@@ -10,10 +10,11 @@ function EmptyTrackList() {
     </div>;
 }
 
-function TrackList({ tracks }) {
+function TrackList({ tracks, onDelete }) {
     let trackList = tracks.map((track) => <Track
         key={track.track_id}
         track={track}
+        onDelete={onDelete}
     ></Track>);
     let emptyTrackList = <EmptyTrackList></EmptyTrackList>;
     return (

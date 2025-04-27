@@ -5,7 +5,7 @@ import "../styles/Release.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-function Release({ release }) {
+function Release({ release, onDelete }) {
 
     const [tracks, setTracksFromRelease] = useState([]);
 
@@ -27,7 +27,7 @@ function Release({ release }) {
             <div className="card-body">
                 <p className="release-info">Type: {release.type}</p>
                 <div className="track-list-wrapper">
-                    <TrackList tracks={tracks} />
+                    <TrackList tracks={tracks} onDelete={onDelete} />
                 </div>
             </div>
         </div>

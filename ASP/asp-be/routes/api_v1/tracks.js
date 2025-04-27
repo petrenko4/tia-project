@@ -5,10 +5,31 @@ const AWS = require('@aws-sdk/client-s3');
 const path = require('path');
 const fs = require('fs');
 require('dotenv').config();
-const { getTracks, addTracks } = require('../../models/tracks');
+const { getTracks, addTracks, deleteTrack } = require('../../models/tracks');
 
 
 const router = express.Router();
+
+router.delete('/', (req, res, next) => {
+    if (req.session && req.session.userId) {
+        const track_id = req.query.track_id
+        if (track_id) {
+            deleteTrack(track_id).then(
+                (tracks) => {
+                    res.status(200).json(tracks.rows);
+                }
+            ).catch(
+                (err) => {
+                    console.log(err);
+                    res.status(500);
+                }
+            );
+        }
+
+    } else {
+        res.status(401).end();
+    }
+});
 
 router.get('/', (req, res, next) => {
 

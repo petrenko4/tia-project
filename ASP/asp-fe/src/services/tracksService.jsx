@@ -13,6 +13,20 @@ function getTracks() {
         });
 }
 
+function deleteTrack(track_id) {
+    return fetch("/api/v1/tracks/?track_id=" + track_id, { method: "DELETE", credentials: "include" }).then(
+        (response) => {
+            if (!response.ok) { 
+                throw new Error("Error getting messages");
+            }
+            return response.json();
+        }).catch((error) => {               
+            console.log("Error getting messages");
+            return [];
+        }
+    );
+}
+
 async function addTrack(track) {
 
     const formData = new FormData();
@@ -38,4 +52,4 @@ async function addTrack(track) {
     return await response.status;
 }
 
-export { getTracks, addTrack };
+export { getTracks, addTrack, deleteTrack };
