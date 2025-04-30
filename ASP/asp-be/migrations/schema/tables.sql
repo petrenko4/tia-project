@@ -1,7 +1,7 @@
 CREATE TABLE "public"."users" (
   "id" varchar(100) NOT NULL,
   "email" varchar(100) NOT NULL UNIQUE,
-  "username" varchar(100) NOT NULL,
+  "username" varchar(100) NOT NULL UNIQUE,
   "date_of_birth" date,
   "gender" varchar(10),
   PRIMARY KEY ("id")

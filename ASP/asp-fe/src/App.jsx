@@ -12,10 +12,12 @@ import UploadMusic from './pages/UploadMusic';
 import SignupPage from './pages/SignupPage';
 import { useNavigate } from "react-router-dom";
 import Buttons from './components/Buttons';
+import TrackEditPage from './pages/TrackEditPage';
 
 function App() {
   const [error, setError] = useState('');
   const [authStatus, setAuthStatus] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   return (
     <>
@@ -26,7 +28,8 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<WelcomeScreen error={error} setError={setError} setAuthStatus={setAuthStatus} />}
+              element={<WelcomeScreen error={error} setError={setError} setAuthStatus={setAuthStatus} 
+                        setIsAdmin = {setIsAdmin} isAdmin = {isAdmin}/>}
             />
             <Route
               path="/playlists"
@@ -51,6 +54,11 @@ function App() {
             <Route
               path="/signup"
               element={<SignupPage error={error} setError={setError} setAuthStatus={setAuthStatus} />}
+            />
+            <Route
+              path="/edit"
+              element={<TrackEditPage error={error} setError={setError} setAuthStatus={setAuthStatus} 
+                        authStatus = {authStatus} isAdmin = {isAdmin} setIsAdmin = {setIsAdmin}/>}  
             />
           </Routes>
         </BrowserRouter>

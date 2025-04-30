@@ -9,6 +9,12 @@ exports.getTracks = function () {
     );
 };
 
+exports.updateTrack = function(track) {
+    return pool.query("update tracks set title = $1, release = $2, category = $3, file = $4 where id = $5", 
+        [track.title, track.release_id, track.category, track.file, track.id]
+    );    
+};
+
 exports.deleteTrack = function (track_id) {
     return pool.query("delete from tracks where id = $1", [track_id]);
 };

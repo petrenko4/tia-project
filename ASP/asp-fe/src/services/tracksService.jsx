@@ -13,6 +13,26 @@ function getTracks() {
         });
 }
 
+function updateTrack(track) {
+    console.log("track in update: " + JSON.stringify(track));
+    return fetch("/api/v1/tracks/", { method: "PUT", 
+            body: JSON.stringify(track), 
+            credentials: "include" ,
+            headers: { "Content-Type": "application/json" }
+        
+        }).then(
+        (response) => {
+            if (!response.ok) { 
+                throw new Error("Error getting messages");
+            }
+            return response.json();
+        }).catch((error) => {               
+            console.log("Error getting messages");
+            return [];
+        }
+    );
+}
+
 function deleteTrack(track_id) {
     return fetch("/api/v1/tracks/?track_id=" + track_id, { method: "DELETE", credentials: "include" }).then(
         (response) => {
@@ -52,4 +72,4 @@ async function addTrack(track) {
     return await response.status;
 }
 
-export { getTracks, addTrack, deleteTrack };
+export { getTracks, addTrack, deleteTrack, updateTrack };

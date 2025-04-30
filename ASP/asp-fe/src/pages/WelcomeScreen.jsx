@@ -26,8 +26,12 @@ function WelcomeScreen(props) {
         }
 
         login(username, password)
-            .then(() => {
+            .then((response) => {
+                console.log(response);
                 props.setAuthStatus(true);
+                if(response.isAdmin){
+                    props.setIsAdmin(true);
+                }
                 navigate('/library');
             })
             .catch((error) => {

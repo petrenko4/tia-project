@@ -6,7 +6,7 @@ var { hashPassword } = require('../utils/authHelpers.js');
 // returns promise !
 exports.getUsers = function (username) {
     return pool.query(
-        "select u.username, u.id, a.password from users u, accounts a where u.username = $1 and u.id = a.id",
+        "select u.username, u.id, a.password, a.is_admin from users u, accounts a where u.username = $1 and u.id = a.id",
         [username]
     );
 };

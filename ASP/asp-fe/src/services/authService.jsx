@@ -40,6 +40,7 @@ function login(username, password) {
                 }
                 throw new Error("Error logging in");
             }
+            return response.json();
         })
 }
 

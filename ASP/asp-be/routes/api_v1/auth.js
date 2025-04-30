@@ -52,7 +52,12 @@ router.post("/login", (req, res) => {
                         if (isValid) {
                             req.session.userId = userId;  //production creates session
                             //console.log("session: ", req.session.userId);
-                            return res.status(200).end();
+                            console.log("admin status: "+result.rows[0].is_admin);
+                            return res.json({
+                                id: userId,
+                                username: username,
+                                isAdmin: result.rows[0].is_admin
+                            });
                         }
                         // invalid password
                         else {
