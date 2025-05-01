@@ -16,6 +16,7 @@ router.get('/', (req, res, next) => {
         if (release_id) {
             getTracksFromRelease(release_id, req.session.userId).then(
                 (tracks) => {
+                    console.log(JSON.stringify(tracks.rows));
                     res.status(200).json(tracks.rows);
                 }
             ).catch(

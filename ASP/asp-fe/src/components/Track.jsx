@@ -20,18 +20,19 @@ function Track({ track, onDelete, isAdmin }) {
         }
     };
 
-    console.log("admin status in track: " + isAdmin);
+    console.log("username in track: " + track.username);
 
     return (
         <div className="card track-card p-3">
             <h5 className="card-title">{track.title}</h5>
+            <p className="text-muted mb-1">By {track.username}</p> {/* Added line */}
             <p><strong>Category:</strong> {track.category}</p>
             <audio controls className="w-100 mb-2">
                 <source src={track.file} type="audio/mpeg" />
             </audio>
             {isAdmin && (
                 <div className="d-flex gap-2">
-                    <button className="btn btn-warning btn-sm" onClick={()=>{navigate(`/edit`, { state: { track } } );}}>
+                    <button className="btn btn-warning btn-sm" onClick={() => navigate(`/edit`, { state: { track } })}>
                         Edit
                     </button>
                     <button className="btn btn-danger btn-sm" onClick={confirmDelete}>
