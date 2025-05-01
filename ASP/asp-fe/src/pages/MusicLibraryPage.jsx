@@ -53,7 +53,7 @@ function MusicLibraryPage(props) {
         <div className="container mt-5">
             <h1>My releases</h1>
             {releases.length > 0 ? (
-                <ReleaseList releases={releases} onDelete={handleDelete} allTracks = {tracks} />
+                <ReleaseList releases={releases} onDelete={handleDelete} allTracks = {tracks} isAdmin={props.isAdmin} />
             ) : (
                 <p>No releases yet</p>
             )}

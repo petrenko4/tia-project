@@ -7,6 +7,8 @@ function WelcomeScreen(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    console.log("ws props: " + JSON.stringify(props));
+
     const handleUsernameChange = (event) => {
         setUsername(event.target.value);
     };

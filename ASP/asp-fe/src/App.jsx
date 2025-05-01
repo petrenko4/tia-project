@@ -23,7 +23,7 @@ function App() {
     <>
       <div className="container">
         <BrowserRouter>
-          <Header authStatus = {authStatus} error={error} setError={setError} setAuthStatus={setAuthStatus}/>
+          <Header authStatus = {authStatus} error={error} setError={setError} setAuthStatus={setAuthStatus} isAdmin = {isAdmin} setIsAdmin = {setIsAdmin}/>
           <Buttons error={error} setError={setError} setAuthStatus={setAuthStatus} authStatus = {authStatus}/>
           <Routes>
             <Route
@@ -37,7 +37,7 @@ function App() {
             />
             <Route
               path="/browsing"
-              element={<BrowsingPage error={error} setError={setError} setAuthStatus={setAuthStatus} authStatus={authStatus}/>}
+              element={<BrowsingPage error={error} setError={setError} setAuthStatus={setAuthStatus} authStatus={authStatus} isAdmin = {isAdmin}/>}
             />
             <Route
               path="/upload"
@@ -45,7 +45,7 @@ function App() {
             />
             <Route
               path="/library"
-              element={<MusicLibraryPage error={error} setError={setError} setAuthStatus={setAuthStatus} authStatus={authStatus} />}
+              element={<MusicLibraryPage error={error} setError={setError} setAuthStatus={setAuthStatus} authStatus={authStatus} isAdmin = {isAdmin} />}
             />
             <Route
               path="/newRelease"

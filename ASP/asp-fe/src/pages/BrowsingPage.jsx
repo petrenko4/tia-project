@@ -13,6 +13,8 @@ function BrowsingPage(props) {
 
     const navigate = useNavigate();
 
+    console.log("browse props: " + JSON.stringify(props));
+
     useEffect(() => {
         if (!props.authStatus) {
             props.setError("Not authenticated"),
@@ -80,9 +82,9 @@ function BrowsingPage(props) {
 
             {/* Results */}
             {searchMode === 'tracks' ? (
-                <TrackList tracks={filteredTracks} />
+                <TrackList tracks={filteredTracks} isAdmin = {props.isAdmin}/>
             ) : (
-                <ReleaseList releases={filteredReleases} />
+                <ReleaseList releases={filteredReleases} isAdmin = {props.isAdmin}/>
             )}
         </div>
     );

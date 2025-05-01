@@ -9,12 +9,13 @@ function EmptyReleaseList() {
         </div>
     </div>;
 }
-function ReleaseList({ releases, onDelete, allTracks }) {
+function ReleaseList({ releases, onDelete, isAdmin }) {
     console.log("ReleaseList: " + releases);
     let releaseList = releases.map((release) => <Release
         key={release.id}
         release={release}
         onDelete = {onDelete}
+        isAdmin = {isAdmin}
     ></Release>);
     let emptyReleaseList = <EmptyReleaseList></EmptyReleaseList>;
     return (

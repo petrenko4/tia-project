@@ -4,9 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { deleteTrack } from '../services/tracksService';
 import { useNavigate } from 'react-router-dom';
 
-function Track({ track, onDelete }) {
+function Track({ track, onDelete, isAdmin }) {
     const [showModal, setShowModal] = useState(false);
-    const isAdmin = true;
     const navigate = useNavigate();
     const confirmDelete = () => setShowModal(true);
     const cancelDelete = () => setShowModal(false);
@@ -20,6 +19,8 @@ function Track({ track, onDelete }) {
             console.error("Failed to delete", err);
         }
     };
+
+    console.log("admin status in track: " + isAdmin);
 
     return (
         <div className="card track-card p-3">
