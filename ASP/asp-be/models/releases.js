@@ -10,6 +10,13 @@ exports.getReleases = function (user_id) {
     );
 };
 
+exports.getReleasesAll = function () {
+    return pool.query(
+        `select r.id, r.name, r.type, r.authors
+        from public.releases r
+        `, []
+    );
+}
 exports.addRelease = function(release, userId) {
     return pool.query(`insert into releases(id, name, type, authors) values($1, $2, $3, $4)`, 
         [release.id, release.releaseName, release.type, userId]

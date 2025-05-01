@@ -11,6 +11,19 @@ function getReleases() {
             return [];
         });
 }
+function getReleasesAll() {
+    return fetch("/api/v1/releases/?tagAll=true").then(  // promise is resolved
+
+        (response) => {
+            if (!response.ok) { // HTTP status code NOT between 200-299
+                throw new Error("Error getting messages");
+            }
+            return response.json();
+        }).catch((error) => {               
+            console.log("Error getting messages");
+            return [];
+        });
+}
 
 function getTracksFromRelease(release_id) {
     return fetch("/api/v1/releases/?release_id=" + release_id).then(  // promise is resolved
@@ -55,4 +68,4 @@ async function addRelease(release) {
     return await response.status;
 }
 
-export { getReleases, addRelease, getTracksFromRelease };
+export { getReleases, addRelease, getTracksFromRelease, getReleasesAll };

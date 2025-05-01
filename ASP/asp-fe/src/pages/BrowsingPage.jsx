@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getTracks } from '../services/tracksService';
-import { getReleases } from '../services/releaseService';
+import { getReleasesAll } from '../services/releaseService';
 import ReleaseList from '../components/ReleaseList';
 import TrackList from '../components/TrackList';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +25,7 @@ function BrowsingPage(props) {
             })
             .catch(error => console.error(error));
 
-        getReleases()
+        getReleasesAll()
             .then(data => {
                 if (data.error) throw new Error(data.error);
                 setReleases(data);

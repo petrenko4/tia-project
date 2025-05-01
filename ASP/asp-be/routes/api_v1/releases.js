@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { addRelease, getReleases, getTracksFromRelease } = require('../../models/releases');
+const { addRelease, getReleases, getTracksFromRelease, getReleasesAll } = require('../../models/releases');
 
 const router = express.Router();
 
@@ -11,6 +11,7 @@ router.get('/', (req, res, next) => {
 
     if (req.session && req.session.userId) {
         const release_id = req.query.release_id;
+        const tagAll = req.query.tagAll;
 
         if (release_id) {
             getTracksFromRelease(release_id, req.session.userId).then(
@@ -24,16 +25,30 @@ router.get('/', (req, res, next) => {
                 }
             );
         } else {
-            getReleases(req.session.userId).then(
-                (release) => {
-                    res.status(200).json(release.rows);
-                }
-            ).catch(
-                (err) => {
-                    console.log(err);
-                    res.status(500);
-                }
-            );
+
+            if (tagAll) {
+                getReleasesAll().then(
+                    (release) => {
+                        res.status(200).json(release.rows);
+                    }
+                ).catch(
+                    (err) => {
+                        console.log(err);
+                        res.status(500);
+                    }
+                );
+            } else {
+                getReleases(req.session.userId).then(
+                    (release) => {
+                        res.status(200).json(release.rows);
+                    }
+                ).catch(
+                    (err) => {
+                        console.log(err);
+                        res.status(500);
+                    }
+                );
+            }
         }
     } else {
         res.status(401).end();
@@ -42,7 +57,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    const { id, releaseName, type, category} = req.body;
+    const { id, releaseName, type, category } = req.body;
     if (!releaseName || !type) {
         return res.status(400).json({ error: "Missing fields in request" });
     }
@@ -61,10 +76,10 @@ router.post('/', (req, res, next) => {
                 res.status(500).end();
             }
         )
-    }else {
+    } else {
         res.status(401).end();
     }
-    
+
 
 });
 
