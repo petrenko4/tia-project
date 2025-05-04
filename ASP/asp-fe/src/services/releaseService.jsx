@@ -1,8 +1,8 @@
 function getReleases() {
-    return fetch("/api/v1/releases").then(  // promise is resolved
+    return fetch("/api/v1/releases").then(  
 
         (response) => {
-            if (!response.ok) { // HTTP status code NOT between 200-299
+            if (!response.ok) { 
                 throw new Error("Error getting messages");
             }
             return response.json();
@@ -16,6 +16,7 @@ function getReleasesAll() {
 
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
+                
                 throw new Error("Error getting messages");
             }
             return response.json();

@@ -2,11 +2,16 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var tracksRouter = require('./routes/api_v1/tracks');
 var releasesRouter = require('./routes/api_v1/releases');
 var authRouter = require('./routes/api_v1/auth');
+var playlistsRouter = require('./routes/api_v1/playlists');
+
+
 var session = require('express-session');
 const PgSession = require("connect-pg-simple")(session);
 var cookieParser = require('cookie-parser');
@@ -52,10 +57,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/uploads', express.static(path.join(__dirname, 'routes/uploads')));
 app.use('/users', usersRouter);
 app.use('/api/v1/tracks', tracksRouter);
 app.use('/api/v1/releases', releasesRouter);
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/playlists', playlistsRouter);
 
 module.exports = app;

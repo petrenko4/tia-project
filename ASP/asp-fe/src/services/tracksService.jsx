@@ -4,11 +4,14 @@ function getTracks() {
     return fetch("/api/v1/tracks").then(  
         (response) => {
             if (!response.ok) { 
-                throw new Error("Error getting messages");
+                if(response.status === 401 || response.status === 403){
+                    throw new Error("Not authenticated");
+                }
+                throw new Error("Error getting tracks");
             }
             return response.json();
         }).catch((error) => {               
-            console.log("Error getting messages");
+            console.log("Error getting tracks");
             return [];
         });
 }
@@ -23,11 +26,11 @@ function updateTrack(track) {
         }).then(
         (response) => {
             if (!response.ok) { 
-                throw new Error("Error getting messages");
+                throw new Error("Error getting tracks");
             }
             return response.json();
         }).catch((error) => {               
-            console.log("Error getting messages");
+            console.log("Error getting tracks");
             return [];
         }
     );
@@ -37,11 +40,11 @@ function deleteTrack(track_id) {
     return fetch("/api/v1/tracks/?track_id=" + track_id, { method: "DELETE", credentials: "include" }).then(
         (response) => {
             if (!response.ok) { 
-                throw new Error("Error getting messages");
+                throw new Error("Error getting tracks");
             }
             return response.json();
         }).catch((error) => {               
-            console.log("Error getting messages");
+            console.log("Error getting tracks");
             return [];
         }
     );

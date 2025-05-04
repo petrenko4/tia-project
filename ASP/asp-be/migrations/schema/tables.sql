@@ -9,7 +9,7 @@ CREATE TABLE "public"."users" (
 
 CREATE TABLE "public"."playlists" (
   "id" varchar(100) NOT NULL,
-  "owner_id" varchar(100) NOT NULL UNIQUE,
+  "owner_id" varchar(100) NOT NULL,
   "name" varchar(255) NOT NULL,
   "owner" varchar(100) NOT NULL,
   CONSTRAINT "fk_playlists_owner" FOREIGN KEY ("owner_id") REFERENCES "public"."users"("id") ON DELETE CASCADE,
