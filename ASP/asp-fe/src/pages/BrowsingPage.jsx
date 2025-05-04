@@ -17,23 +17,32 @@ function BrowsingPage(props) {
 
     useEffect(() => {
         if (!props.authStatus) {
-            props.setError("Not authenticated"),
-                navigate('/')
+            props.setError("Not authenticated");
+            navigate('/');
+            return;
         }
-        getTracks()
-            .then(data => {
-                if (data.error) throw new Error(data.error);
-                setTracks(data);
-            })
-            .catch(error => console.error(error));
 
-        getReleasesAll()
-            .then(data => {
-                if (data.error) throw new Error(data.error);
-                setReleases(data);
-            })
-            .catch(error => console.error(error));
-    }, []);
+        const fetchData = () => {
+            getTracks()
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+                    setTracks(data);
+                })
+                .catch(error => console.error(error));
+
+            getReleasesAll()
+                .then(data => {
+                    if (data.error) throw new Error(data.error);
+                    setReleases(data);
+                })
+                .catch(error => console.error(error));
+        };
+
+        fetchData(); 
+
+        const interval = setInterval(fetchData, 10000); 
+        return () => clearInterval(interval); 
+    }, [navigate]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -82,9 +91,9 @@ function BrowsingPage(props) {
 
             {/* Results */}
             {searchMode === 'tracks' ? (
-                <TrackList tracks={filteredTracks} isAdmin = {props.isAdmin}/>
+                <TrackList tracks={filteredTracks} isAdmin={props.isAdmin} />
             ) : (
-                <ReleaseList releases={filteredReleases} isAdmin = {props.isAdmin}/>
+                <ReleaseList releases={filteredReleases} isAdmin={props.isAdmin} />
             )}
         </div>
     );

@@ -85,19 +85,6 @@ function TrackEditPage(props) {
                     </select>
                 </div>
 
-                <div className="form-group">
-                    <label htmlFor="releaseSelect">Select a Release:</label>
-                    <select id="releaseSelect" className="form-control" value={releaseId}
-                        onChange={e => setReleaseId(e.target.value)}>
-                        <option value="">Select a release</option>
-                        {releases.map((release) => (
-                            <option key={release.id} value={release.id}>
-                                {release.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
                 <button className="btn btn-primary" type="submit">Save</button>
             </form>
         </div>

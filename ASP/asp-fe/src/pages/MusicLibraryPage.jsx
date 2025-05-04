@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/commonStyles.css';
 import '../styles/tracklistStyles.css';
 import { getTracks, deleteTrack } from '../services/tracksService';
-import { getReleases } from '../services/releaseService';
+import { getReleases, getTracksFromRelease } from '../services/releaseService';
 import ReleaseList from '../components/ReleaseList';
 
 function MusicLibraryPage(props) {
@@ -40,20 +40,22 @@ function MusicLibraryPage(props) {
         fetchReleases();
     }, [navigate]);
 
-    const handleDelete = async (trackId) => {
-        deleteTrack(trackId).then((response) => {
-            console.log('Track deleted successfully');
-            fetchTracks();
-            fetchReleases();
-            console.log('Releases updated');
-        });
+    const handleDelete = (trackId, releaseId) => {
+        deleteTrack(trackId)
+            .then(() => {
+                console.log('Track deleted');
+                fetchTracks();
+                fetchReleases();
+            })
+            .catch(console.error);
     };
+
 
     return (
         <div className="container mt-5">
             <h1>My releases</h1>
             {releases.length > 0 ? (
-                <ReleaseList releases={releases} onDelete={handleDelete} allTracks = {tracks} isAdmin={props.isAdmin} />
+                <ReleaseList releases={releases} onDelete={handleDelete} allTracks={tracks} isAdmin={props.isAdmin} />
             ) : (
                 <p>No releases yet</p>
             )}

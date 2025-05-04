@@ -45,10 +45,10 @@ CREATE TABLE "public"."tracks" (
   PRIMARY KEY ("id")
 );
 
-CREATE TABLE "public"."track_playlists" (
-  "track_id" varchar(100) REFERENCES "public"."tracks"("id") ON DELETE CASCADE,
+CREATE TABLE "public"."playlist_tracks" (
   "playlist_id" varchar(100) REFERENCES "public"."playlists"("id") ON DELETE CASCADE,
-  PRIMARY KEY ("track_id", "playlist_id")
+  "track_id" varchar(100) REFERENCES "public"."tracks"("id") ON DELETE CASCADE,
+  PRIMARY KEY ("playlist_id", "track_id")
 );
 
 CREATE TABLE "public"."category" (

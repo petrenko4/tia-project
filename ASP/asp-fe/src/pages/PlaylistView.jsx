@@ -1,34 +1,75 @@
 import { useEffect, useState } from "react";
 import { getPlaylists } from "../services/playlistService";
-import { createPlaylist } from "../services/playlistService";
+import { createPlaylist, deletePlaylist } from "../services/playlistService";
+import { getTracksFromPlaylist } from "../services/playlistService";
+import Track from "../components/Track";
+import { useNavigate } from "react-router-dom";
 
-export default function PlaylistView({ onCreate }) {
+function PlaylistView(props) {
     const [playlists, setPlaylists] = useState([]);
+    const [trackCounts, setTrackCounts] = useState({});
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [newName, setNewName] = useState("");
+    const [activePlaylist, setActivePlaylist] = useState(null);
+    const [playlistTracks, setPlaylistTracks] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getPlaylists()
-            .then((data) => {
-                setPlaylists(data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error("Error fetching releases:", err);
-                setLoading(false);
-            });
+        if (!props.authStatus) {
+            props.setError("Not authenticated"),
+                navigate('/')
+        }
+        fetchPlaylists();
     }, []);
 
-    const handleCreate = () => {
-        if (newName.trim()) {
-            createPlaylist({ name: newName.trim() });
-            setNewName("");
-            setShowModal(false);
+    const fetchPlaylists = async () => {
+        try {
+            const data = await getPlaylists();
+            setPlaylists(data);
+
+            const counts = {};
+            await Promise.all(
+                data.map(async (pl) => {
+                    const tracks = await getTracksFromPlaylist(pl.id);
+                    counts[pl.id] = tracks.length;
+                })
+            );
+            setTrackCounts(counts);
+            setLoading(false);
+        } catch (err) {
+            console.error("Error fetching playlists:", err);
+            setLoading(false);
         }
     };
 
-    console.log("playlists: ", playlists);
+    const handleCreate = async () => {
+        if (newName.trim()) {
+            await createPlaylist({ name: newName.trim() });
+            setNewName("");
+            setShowModal(false);
+            fetchPlaylists(); // refresh list
+        }
+    };
+
+    const handleDeletePlaylist = async (playlistId) => {
+    try {
+        await deletePlaylist(playlistId);
+        if (activePlaylist?.id === playlistId) {
+            setActivePlaylist(null); 
+            setPlaylistTracks([]);
+        }
+        fetchPlaylists();
+    } catch (error) {
+        console.error("Error deleting playlist:", error);
+    }
+};
+
+    const handleShowTracks = async (playlist) => {
+        setActivePlaylist(playlist);
+        const tracks = await getTracksFromPlaylist(playlist.id);
+        setPlaylistTracks(tracks);
+    };
 
     return (
         <div className="container mt-4">
@@ -37,31 +78,52 @@ export default function PlaylistView({ onCreate }) {
             {loading ? (
                 <p>Loading...</p>
             ) : playlists.length > 0 ? (
-                <div className="row">
+                <ul className="list-group mb-4">
                     {playlists.map((playlist) => (
-                        <div key={playlist.id} className="col-md-4 mb-3">
-                            <div className="card h-100">
-                                <div className="card-body">
-                                    <h5 className="card-title">{playlist.name}</h5>
-                                    <p className="card-text text-muted">
-                                        {playlist.trackCount || 0} tracks
-                                    </p>
-                                </div>
+                        <li
+                            key={playlist.id}
+                            className="list-group-item d-flex justify-content-between align-items-center"
+                        >
+                            <div style={{ cursor: "pointer" }} onClick={() => handleShowTracks(playlist)}>
+                                {playlist.name}
+                                <span className="badge bg-primary rounded-pill ms-2">
+                                    {trackCounts[playlist.id] ?? 0} tracks
+                                </span>
                             </div>
-                        </div>
+                            <button
+                                className="btn btn-sm btn-outline-danger"
+                                onClick={() => handleDeletePlaylist(playlist.id)}
+                            >
+                                Delete
+                            </button>
+                        </li>
                     ))}
-                </div>
+                </ul>
             ) : (
                 <p>No playlists found.</p>
             )}
 
-            <div className="mt-4">
+            <div className="mb-4">
                 <button className="btn btn-primary" onClick={() => setShowModal(true)}>
                     Create Playlist
                 </button>
             </div>
 
-            {/* Modal */}
+            {/* Track list for selected playlist */}
+            {activePlaylist && (
+                <div className="mb-4">
+                    <h4 className="mb-3">Tracks in "{activePlaylist.name}"</h4>
+                    {playlistTracks.length > 0 ? (
+                        playlistTracks.map((track) => (
+                            <Track key={track.id} track={track} isAdmin={false} onDelete={() => { }} />
+                        ))
+                    ) : (
+                        <p>No tracks in this playlist.</p>
+                    )}
+                </div>
+            )}
+
+            {/* Create Playlist Modal */}
             {showModal && (
                 <div className="modal show fade d-block" tabIndex="-1">
                     <div className="modal-dialog">
@@ -90,3 +152,5 @@ export default function PlaylistView({ onCreate }) {
         </div>
     );
 }
+
+export default PlaylistView;

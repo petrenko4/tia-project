@@ -73,9 +73,9 @@ const upload = multer({
 
 router.put('/', (req, res) => {
     if (req.session && req.session.userId) {
-        const { id, title, release_id, category } = req.body;
+        const { id, title, category } = req.body;
         console.log(req.body);
-        if (!id || !title || !release_id || !category) {
+        if (!id || !title || !category) {
             return res.status(400).json({ error: "Missing fields" });
         }
         updateTrack(req.body).then(

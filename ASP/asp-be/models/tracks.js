@@ -12,8 +12,8 @@ exports.getTracks = function () {
 };
 
 exports.updateTrack = function (track) {
-    return pool.query("update tracks set title = $1, release = $2, category = $3, file = $4 where id = $5",
-        [track.title, track.release_id, track.category, track.file, track.id]
+    return pool.query("update tracks set title = $1, category = $2, file = $3 where id = $4",
+        [track.title, track.category, track.file, track.id]
     );
 };
 
