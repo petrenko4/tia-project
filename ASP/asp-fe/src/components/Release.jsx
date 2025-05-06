@@ -1,4 +1,4 @@
-import { getTracksFromRelease } from "../services/releaseService";
+import { getTracksFromRelease, deleteRelease } from "../services/releaseService";
 import TrackList from "./TrackList";
 import { useState, useEffect } from "react";
 import "../styles/Release.css";
@@ -27,12 +27,30 @@ function Release({ release, onDelete, isAdmin }) {
         <div className="card release-card mb-4">
             <div className="card-header release-header">
                 {release.name}
+                {isAdmin && (
+                    <button
+                        className="btn btn-danger btn-sm float-end"
+                        onClick={() => {
+                            deleteRelease(release.id)
+                            getTracksFromRelease(release.id)
+                                .then((tracks) => {
+                                    setTracksFromRelease(tracks);
+                                })
+                                .catch((error) => {
+                                    console.error(error);
+                                });
+                        }
+                        }
+                    >
+                        Delete
+                    </button>
+                )}
             </div>
             <div className="card-body">
                 <p className="release-info">By: <span className="text-muted">{release.username}</span></p>
                 <p className="release-info">Type: {release.type}</p>
                 <div className="track-list-wrapper">
-                    <TrackList tracks={tracks} onDelete={onDelete} isAdmin={isAdmin}/>
+                    <TrackList tracks={tracks} onDelete={onDelete} isAdmin={isAdmin} />
                 </div>
             </div>
         </div>

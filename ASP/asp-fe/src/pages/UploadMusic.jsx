@@ -86,7 +86,10 @@ function UploadMusic(props) {
             <form onSubmit={handleSubmit} className="needs-validation" noValidate>
                 <div className="form-group">
                     <label htmlFor="fileInput">Choose file:</label>
-                    <input type="file" id="fileInput" onChange={(event) => setSelectedFile(event.target.files[0])} className="form-control-file" />
+                    <input type="file" id="fileInput" 
+                        accept="audio/mpeg"
+                        onChange={(event) => setSelectedFile(event.target.files[0])} 
+                        className="form-control-file" />
                     {errors.file && (
                         <div className="alert alert-danger mt-2">
                             {errors.file}

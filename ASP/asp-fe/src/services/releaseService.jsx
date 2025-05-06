@@ -17,15 +17,29 @@ function getReleasesAll() {
         (response) => {
             if (!response.ok) { // HTTP status code NOT between 200-299
                 
-                throw new Error("Error getting messages");
+                throw new Error("Error getting releases");
             }
             return response.json();
         }).catch((error) => {               
-            console.log("Error getting messages");
+            console.log("Error getting releases");
             return [];
         });
 }
-
+function deleteRelease(release_id) {
+    console.log("delete release called");
+    return fetch("/api/v1/releases/?release_id=" + release_id, { method: "DELETE", credentials: "include" }).then(
+        (response) => {
+            if (!response.ok) { 
+                throw new Error("Error deleting release");
+            }
+            console.log("release deleted");
+            return response.json();
+        }).catch((error) => {               
+            console.log("Error deleting release");
+            return [];
+        }
+    );
+}
 function getTracksFromRelease(release_id) {
     return fetch("/api/v1/releases/?release_id=" + release_id).then(  // promise is resolved
         (response) => {
@@ -69,4 +83,4 @@ async function addRelease(release) {
     return await response.status;
 }
 
-export { getReleases, addRelease, getTracksFromRelease, getReleasesAll };
+export { getReleases, addRelease, getTracksFromRelease, getReleasesAll, deleteRelease };
