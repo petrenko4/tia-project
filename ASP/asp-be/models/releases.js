@@ -10,6 +10,10 @@ exports.getReleases = function (user_id) {
     );
 };
 
+exports.deleteRelease = function (release_id) {
+    return pool.query("delete from releases where id = $1", [release_id]);
+};
+
 exports.getReleasesAll = function () {
     return pool.query(
         `select r.id, r.name, r.type, r.authors, u.username

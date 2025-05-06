@@ -1,8 +1,30 @@
 const express = require('express');
 const multer = require('multer');
-const { addRelease, getReleases, getTracksFromRelease, getReleasesAll } = require('../../models/releases');
+const { addRelease, getReleases, getTracksFromRelease, getReleasesAll, deleteRelease } = require('../../models/releases');
 
 const router = express.Router();
+
+router.delete('/', (req, res, next) => {
+        if (req.session && req.session.userId) {
+            console.log("be delete called");
+            const release_id = req.query.release_id
+            if (release_id) {
+                deleteRelease(release_id).then(
+                    (releases) => {
+                        res.status(200).json(releases.rows);
+                    }
+                ).catch(
+                    (err) => {
+                        console.log(err);
+                        res.status(500);
+                    }
+                );
+            }
+
+        } else {
+            res.status(401).end();
+        }
+    });
 
 router.get('/', (req, res, next) => {
 
@@ -81,6 +103,7 @@ router.post('/', (req, res, next) => {
         res.status(401).end();
     }
 
+    
 
 });
 
