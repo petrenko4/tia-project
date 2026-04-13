@@ -19,6 +19,40 @@
         "cells": [
           {
             "position": {
+              "x": -892.0000000000005,
+              "y": -260.0000000000009
+            },
+            "size": {
+              "width": 280,
+              "height": 270
+            },
+            "attrs": {
+              "label": {
+                "text": "Server"
+              }
+            },
+            "visible": true,
+            "shape": "trust-boundary-box",
+            "id": "ccbbc8d5-bb1f-46e5-8d6a-ab9a6affab2f",
+            "zIndex": -1,
+            "data": {
+              "type": "tm.BoundaryBox",
+              "name": "Server",
+              "description": "",
+              "isTrustBoundary": true,
+              "hasOpenThreats": false,
+              "crossingFlows": [
+                "f14f2232-d9e8-49a6-841e-af520e36483d",
+                "fda5897c-45f2-4ff9-a3df-aa302e1e216c"
+              ],
+              "containedElements": [
+                "15b10b0f-89a6-4fd9-ba77-72b907401d72",
+                "a03b7b6b-928d-4b0b-900a-274c24f2c63f"
+              ]
+            }
+          },
+          {
+            "position": {
               "x": -996.25,
               "y": -370
             },
@@ -575,7 +609,9 @@
               "isPublicNetwork": false,
               "protocol": "",
               "threats": [],
-              "trustBoundaryIds": []
+              "trustBoundaryIds": [
+                "ccbbc8d5-bb1f-46e5-8d6a-ab9a6affab2f"
+              ]
             },
             "labels": [
               "Data Flow"
@@ -667,7 +703,9 @@
               "isPublicNetwork": false,
               "protocol": "",
               "threats": [],
-              "trustBoundaryIds": []
+              "trustBoundaryIds": [
+                "ccbbc8d5-bb1f-46e5-8d6a-ab9a6affab2f"
+              ]
             },
             "labels": [
               "Data Flow"
