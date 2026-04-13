@@ -171,7 +171,7 @@
           {
             "position": {
               "x": -1090,
-              "y": -270
+              "y": -260.0000000000009
             },
             "size": {
               "width": 60,
@@ -334,6 +334,13 @@
                 "denialOfService": 0,
                 "elevationOfPrivilege": 1
               }
+            },
+            "tools": {
+              "items": [
+                "boundary",
+                "button-remove"
+              ],
+              "name": null
             }
           },
           {
